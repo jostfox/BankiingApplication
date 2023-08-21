@@ -4,52 +4,56 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "transaction")
+@Table(name = "transactions")
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "debit_account_id", referencedColumnName = "id")
-    private Account debitAccountId;
+    private Account debitAccount;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "credit_account_id")
-    private Account creditAccountId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "credit_account_id", referencedColumnName = "id")
+    private Account creditAccount;
 
     private int type;
     private double amount;
     private String description;
-    //private LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
 
     public Transaction() {
     }
 
-    public long getId() {
+    public Transaction(Account creditAccount, Account debitAccount,
+                       double amount, String description, int type, LocalDateTime createdAt) {
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Account getDebitAccountId() {
-        return debitAccountId;
+    public Account getDebitAccount() {
+        return debitAccount;
     }
 
-    public void setDebitAccountId(Account debitAccountId) {
-        this.debitAccountId = debitAccountId;
+    public void setDebitAccount(Account debitAccountId) {
+        this.debitAccount = debitAccountId;
     }
 
-    public Account getCreditAccountId() {
-        return creditAccountId;
+    public Account getCreditAccount() {
+        return creditAccount;
     }
 
-    public void setCreditAccountId(Account creditAccountId) {
-        this.creditAccountId = creditAccountId;
+    public void setCreditAccount(Account creditAccountId) {
+        this.creditAccount = creditAccountId;
     }
 
     public int getType() {
@@ -76,24 +80,24 @@ public class Transaction {
         this.description = description;
     }
 
-//    public LocalDateTime getCreatedAt() {
-//        return createdAt;
-//    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-//    public void setCreatedAt(LocalDateTime createdAt) {
-//        this.createdAt = createdAt;
-//    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     @Override
     public String toString() {
         return "Transaction{" +
                 "id=" + id +
-                ", debitAccountId=" + debitAccountId +
-                ", creditAccountId=" + creditAccountId +
+                ", debitAccountId=" + debitAccount +
+                ", creditAccountId=" + creditAccount +
                 ", type=" + type +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
-                /*", createdAt=" + createdAt +*/
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

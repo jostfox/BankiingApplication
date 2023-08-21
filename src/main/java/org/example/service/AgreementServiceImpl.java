@@ -1,6 +1,8 @@
 package org.example.service;
 
 import org.example.entity.Agreement;
+import org.example.entity.Client;
+import org.example.exceptions.ItemNotFoundException;
 import org.example.repositories.AgreementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,26 @@ public class AgreementServiceImpl implements AgreementService {
     }
 
     @Override
-    public Agreement newAgreement(Agreement agreement) {
+    public Agreement create(Agreement agreement) {
         return agreementRepository.save(agreement);
+    }
+
+    @Override
+    public Agreement getById(Long id) {
+        Agreement agreement = agreementRepository.findById(id).orElse(null);
+        if (agreement == null){
+            throw new ItemNotFoundException(String.format("Agreement with id %d not found", id));
+        }
+        return agreementRepository.getReferenceById(id);
+    }
+
+    @Override
+    public void remove(Long id) {
+
+    }
+
+    @Override
+    public Agreement update(Long id) {
+        return null;
     }
 }

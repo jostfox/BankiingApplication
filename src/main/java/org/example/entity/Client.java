@@ -1,47 +1,74 @@
 package org.example.entity;
 
+import org.example.dto.ManagerDto;
+import org.example.enums.Status;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "client")
+@Table(name = "clients")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "manager_id", referencedColumnName = "id")
-    private Manager managerId;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
-    private List<Account> accounts = new ArrayList<>();
     private String taxCode;
     private String address;
     private String phone;
     private String email;
-    private int status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-    //private LocalDateTime createdAt;
-    //private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "manager_id", referencedColumnName = "id")
+    private Manager manager;
+
+    @OneToMany(mappedBy = "client")
+    List<Account> accounts = new ArrayList<>();
 
     public Client() {
     }
 
-    public long getId() {
+    public Client(Long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Client(Long id, String firstName, String lastName,
+                  String taxCode, String address, String phone, String email,
+                  Status status, LocalDateTime createdAt, LocalDateTime updatedAt,
+                  Manager manager) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.taxCode = taxCode;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,12 +88,12 @@ public class Client {
         this.lastName = lastName;
     }
 
-    public Manager getManagerId() {
-        return managerId;
+    public Manager getManager() {
+        return manager;
     }
 
-    public void setManagerId(Manager manager) {
-        this.managerId = manager;
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
 
     public List<Account> getAccounts() {
@@ -109,12 +136,28 @@ public class Client {
         this.email = email;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -123,13 +166,15 @@ public class Client {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", manager=" + managerId +
+                ", manager=" + manager +
                 ", accounts=" + accounts +
                 ", taxCode='" + taxCode + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

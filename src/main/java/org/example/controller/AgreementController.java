@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("agreement")
+@RequestMapping("agreements")
 public class AgreementController {
 
     @Autowired
@@ -22,6 +22,6 @@ public class AgreementController {
 
     @PostMapping
     ResponseEntity<Agreement> newAgreement(@RequestBody Agreement agreement) {
-        return ResponseEntity.ok(agreementService.newAgreement(agreement));
+        return ResponseEntity.ok(agreementService.create(agreement));
     }
 }

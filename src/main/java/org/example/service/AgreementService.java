@@ -8,5 +8,11 @@ public interface AgreementService {
 
     public List<Agreement> getAll();
 
-    public Agreement newAgreement(Agreement agreement);
+    public Agreement getById(Long id);
+
+    public Agreement create(Agreement agreement);
+
+    public void remove(Long id);
+
+    public Agreement update(Long id);
 }

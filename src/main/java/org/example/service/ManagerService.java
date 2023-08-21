@@ -8,5 +8,15 @@ public interface ManagerService {
 
     public List<Manager> getAll();
 
-    public Manager newManager(Manager manager);
+    public Manager getById(Long id);
+
+    public Manager getByName(String firstName, String lastName);
+
+    public Manager create(Manager manager);
+
+    public void remove(Long id);
+
+    public Manager update(Long id);
+
+
 }

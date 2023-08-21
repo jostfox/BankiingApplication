@@ -6,7 +6,15 @@ import java.util.List;
 
 public interface AccountService {
 
-public List<Account> getAll();
+    public List<Account> getAll();
 
-public Account createAccount(Account account);
+    public Account getById(Long id);
+
+    public Account create(Account account);
+
+    public void remove(Long id);
+
+    public Account update(Long id);
+
+
 }

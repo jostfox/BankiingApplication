@@ -8,5 +8,9 @@ public interface TransactionService {
 
     public List<Transaction> getAll();
 
-    public Transaction newTransaction(Transaction transaction);
+    public Transaction getById(Long id);
+
+    public Transaction create(Transaction transaction);
+
+    public void transfer(Long accountOneId, Long accountTwoId, double amount);
 }

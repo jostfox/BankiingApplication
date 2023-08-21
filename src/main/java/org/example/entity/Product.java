@@ -1,30 +1,40 @@
 package org.example.entity;
 
+import org.example.enums.Currency;
+import org.example.enums.Status;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private String name;
-    private int status;
-    private int currencyCode;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "manager_id", referencedColumnName = "id")
+    private Manager manager;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
     private double interestRate;
     private int prodLimit;
-//    private LocalDateTime createdAt;
-//    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Product() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -36,20 +46,28 @@ public class Product {
         this.name = name;
     }
 
-    public int getStatus() {
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
+
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public int getCurrencyCode() {
-        return currencyCode;
+    public Currency getCurrency() {
+        return currency;
     }
 
-    public void setCurrencyCode(int currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public double getInterestRate() {
@@ -68,34 +86,31 @@ public class Product {
         this.prodLimit = limit;
     }
 
-//    public LocalDateTime getCreatedAt() {
-//        return createdAt;
-//    }
-
-//    public void setCreatedAt(LocalDateTime createdAt) {
-//        this.createdAt = createdAt;
-//    }
-
-//    public LocalDateTime getUpdatedAt() {
-//        return updatedAt;
-//    }
-
-//    public void setUpdatedAt(LocalDateTime updatedAt) {
-//        this.updatedAt = updatedAt;
-//    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
-                /*", managerId=" + managerId +*/
                 ", name='" + name + '\'' +
+                ", manager=" + manager +
                 ", status=" + status +
-                ", currencyCode=" + currencyCode +
+                ", currency=" + currency +
                 ", interestRate=" + interestRate +
-                /*", limit=" + limit +
+                ", prodLimit=" + prodLimit +
                 ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +*/
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

@@ -1,33 +1,66 @@
 package org.example.entity;
 
+import org.example.enums.Currency;
+import org.example.enums.Status;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "account")
+@Table(name = "accounts")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    private Client client;
     private String iban;
     private String name;
     private int type;
-    private int status;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
     private double balance;
-    private int currencyCode;
-//    private LocalDateTime createdAt;
-//    private LocalDateTime updatedAt;
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Account() {
     }
 
-    public long getId() {
+    public Account(Long id, Long clientId, String iban, String name, int type,
+                   Status status, double balance, Currency currency,
+                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.client = client;
+        this.iban = iban;
+        this.name = name;
+        this.type = type;
+        this.status = status;
+        this.balance = balance;
+        this.currency = currency;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public String getIban() {
@@ -54,11 +87,11 @@ public class Account {
         this.type = type;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -70,41 +103,45 @@ public class Account {
         this.balance = balance;
     }
 
-    public int getCurrencyCode() {
-        return currencyCode;
+    public Currency getCurrency() {
+        return currency;
     }
 
-    public void setCurrencyCode(int currencyCode) {
-        this.currencyCode = currencyCode;
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
-//    public LocalDateTime getCreatedAt() {
-//        return createdAt;
-//    }
-//
-//    public void setCreatedAt(LocalDateTime createdAt) {
-//        this.createdAt = createdAt;
-//    }
-//
-//    public LocalDateTime getUpdatedAt() {
-//        return updatedAt;
-//    }
-//
-//    public void setUpdatedAt(LocalDateTime updatedAt) {
-//        this.updatedAt = updatedAt;
-//    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
+                ", client=" + client +
                 ", iban='" + iban + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", status=" + status +
                 ", balance=" + balance +
-                ", currencyCode=" + currencyCode +
+                ", currency=" + currency +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }
+
+

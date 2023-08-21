@@ -1,15 +1,17 @@
 package org.example.entity;
 
+import org.example.enums.Status;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "agreement")
+@Table(name = "agreements")
 public class Agreement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
@@ -19,19 +21,20 @@ public class Agreement {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product productId;
     private double interestRate;
-    private int status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     private double sum;
-    //private LocalDateTime createdAt;
-    //private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Agreement() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,11 +62,11 @@ public class Agreement {
         this.interestRate = interestRate;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -75,21 +78,21 @@ public class Agreement {
         this.sum = sum;
     }
 
-//    public LocalDateTime getCreatedAt() {
-//        return createdAt;
-//    }
-//
-//    public void setCreatedAt(LocalDateTime createdAt) {
-//        this.createdAt = createdAt;
-//    }
-//
-//    public LocalDateTime getUpdatedAt() {
-//        return updatedAt;
-//    }
-//
-//    public void setUpdatedAt(LocalDateTime updatedAt) {
-//        this.updatedAt = updatedAt;
-//    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     @Override
     public String toString() {
@@ -100,8 +103,8 @@ public class Agreement {
                 ", interestRate=" + interestRate +
                 ", status=" + status +
                 ", sum=" + sum +
-                /*", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +*/
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }
