@@ -1,0 +1,181 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+                   http://www.liquibase.org/xml/ns/dbchangelog-ext
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+    <changeSet id="202308132232456" author="Oleg Rulyov">
+        <comment>Add managers table</comment>
+        <createTable tableName="managers">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="manager_pkey"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="status" type="VARCHAR(10)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202308132233257" author="Oleg Rulyov">
+        <comment>Add clients table</comment>
+        <createTable tableName="clients">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="client_pkey"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="manager_id" type="BIGINT">
+                <constraints foreignKeyName="manager_fkey"
+                             referencedTableName="managers"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+            <column name="tax_code" type="VARCHAR(20)"/>
+            <column name="address" type="VARCHAR(80)"/>
+            <column name="phone" type="VARCHAR(20)"/>
+            <column name="email" type="VARCHAR(60)"/>
+            <column name="status" type="VARCHAR(10)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202308132250215" author="Oleg Rulyov">
+        <comment>Add accounts table</comment>
+        <createTable tableName="accounts">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="account_pkey"/>
+            </column>
+            <column name="iban" type="VARCHAR(34)"/>
+            <column name="name" type="VARCHAR(50)"/>
+            <column name="client_id" type="BIGINT">
+                <constraints foreignKeyName="client_fkey"
+                             referencedTableName="clients"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+            <column name="balance" type="NUMERIC(15, 2)"/>
+            <column name="type" type="INT"/>
+            <column name="status" type="VARCHAR(10)"/>
+            <column name="currency" type="VARCHAR(3)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202308132301458" author="Oleg Rulyov">
+        <comment>Add products table</comment>
+        <createTable tableName="products">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="product_pkey"/>
+            </column>
+            <column name="manager_id" type="BIGINT">
+                <constraints foreignKeyName="manager_prod_fkey"
+                             referencedTableName="managers"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(70)"/>
+            <column name="status" type="VARCHAR(10)"/>
+            <column name="currency" type="VARCHAR(3)"/>
+            <column name="interest_rate" type="NUMERIC(6, 4)"/>
+            <column name="prod_limit" type="NUMERIC(15, 2)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202308132310684" author="Oleg Rulyov">
+        <comment>Add agreements table</comment>
+        <createTable tableName="agreements">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="agreement_pkey"/>
+            </column>
+            <column name="account_id" type="BIGINT">
+                <constraints foreignKeyName="manager_agreem_fkey"
+                             referencedTableName="managers"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints foreignKeyName="product_fkey"
+                             referencedTableName="products"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+            <column name="interest_rate" type="NUMERIC(6, 4)"/>
+            <column name="status" type="VARCHAR(10)"/>
+            <column name="sum" type="NUMERIC(15, 2)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202308132342154" author="Oleg Rulyov">
+        <comment>Add transactions table</comment>
+        <createTable tableName="transactions">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="transaction_pkey"/>
+            </column>
+            <column name="debit_account_id" type="BIGINT">
+                <constraints foreignKeyName="account_debit_fkey"
+                             referencedTableName="accounts"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+            <column name="credit_account_id" type="BIGINT">
+                <constraints foreignKeyName="account_credit_fkey"
+                             referencedTableName="accounts"
+                             referencedColumnNames="id" nullable="false"/>
+            </column>
+            <column name="type" type="INT"/>
+            <column name="amount" type="NUMERIC(15, 2)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+<!--    Test data for initializing tables -->
+    <changeSet id="202308182135156" author="Oleg Rulyov">
+        <comment>Add entities to manager</comment>
+        <sql>
+            insert into managers values (1, 'Michael', 'Wecker', 'ACTIVE', 'Credits', '2023-08-18');
+            insert into managers values (2, 'Julia', 'Alyaskina', 'ACTIVE', 'Accredetives', '2023-08-17')
+        </sql>
+    </changeSet>
+
+    <changeSet id="202308182204548" author="Oleg Rulyov">
+        <comment>Add entities to clients</comment>
+        <sql>
+            insert into clients values (1, 'Alex', 'Schmidt', 1, '2314332421', 'Lange str. 15', '+492662626266',
+                                        'sdfksdfs@gmail.com', 'ACTIVE', '2023-08-18', '2023-08-19');
+            insert into clients values (2, 'Melissa', 'Krutcsh', 2, '2354983421', 'Essener str. 455', '+491612626266',
+                                        'zczsdwds@gmail.com', 'ACTIVE', '2023-08-18', '2023-08-19')
+        </sql>
+    </changeSet>
+
+    <changeSet id="202308182214554" author="Oleg Rulyov">
+        <comment>Add entities to accounts</comment>
+        <sql>
+            insert into accounts values (1, 'DE13549265487563214568', 'main', 1, 1025.25, 1, 'ACTIVE',
+                                        'EUR', '2023-08-18', '2023-08-19');
+            insert into accounts values (2, 'DE42168345973589446248', 'investment', 1, 5847.34, 1, 'ACTIVE',
+                                         'USD', '2023-08-18', '2023-08-19');
+            insert into accounts values (3, 'DE46829746551234761349', 'main', 2, 387.14, 1, 'ACTIVE',
+                                         'EUR', '2023-08-18', '2023-08-19');
+            insert into accounts values (4, 'DE69485316974628716849', 'budget', 2, 8754.23, 1, 'ACTIVE',
+                                         'USD', '2023-08-18', '2023-08-19');
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="202308182227548" author="Oleg Rulyov">
+        <comment>Add entities to products</comment>
+        <sql>
+            insert into products values (1, 1, 'Consumer credit', 'ACTIVE', 'EUR', 4.2, 45.2,  '2023-08-19', '2023-08-19');
+            insert into products values (2, 1, 'Accredetiv', 'ACTIVE', 'USD', 1.1, 8.0,  '2023-08-19', '2023-08-19');
+            insert into products values (3, 2, 'Consumer credit', 'ACTIVE', 'EUR', 4.2, 45.2,  '2023-08-19', '2023-08-19');
+            insert into products values (4, 2, 'Mortgage', 'INACTIVE', 'EUR', 1.89, 3.24,  '2023-08-19', '2023-08-19');
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>
