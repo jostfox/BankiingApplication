@@ -4,6 +4,7 @@ import org.example.entity.Account;
 import org.example.entity.Client;
 import org.example.enums.Status;
 import org.example.exceptions.ItemNotFoundException;
+import org.example.exceptions.NotEmptyBalanceException;
 import org.example.repositories.AccountRepository;
 import org.example.repositories.ClientRepository;
 import org.example.service.handler.FindById;
@@ -59,7 +60,13 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void remove(Long id) {
-        clientRepository.delete(findClientById.findByIdHandledWithException(id, clientRepository));
+        Client client = findClientById.findByIdHandledWithException(id, clientRepository);
+        List<Account> accounts = client.getAccounts();
+        for (Account account : accounts) {
+            account.setBalance(0);
+            closeAccount(client.getId(), account.getId());
+        }
+        clientRepository.delete(client);
     }
 
     @Override
@@ -97,9 +104,13 @@ public class ClientServiceImpl implements ClientService {
         List<Account> accounts = client.getAccounts();
         for (Account account : accounts) {
             if (Objects.equals(account.getId(), accountId)) {
-                accountRepository.delete(account);
-                return;
+                if (account.getBalance() == 0) {
+                    accountRepository.delete(account);
+                    return;
+                }
+                throw new NotEmptyBalanceException("Balance is not 0.00. You can not close the account");
             }
+
         }
         throw new ItemNotFoundException(String.format("Account with id %d not found", accountId));
     }

@@ -39,4 +39,9 @@ public class AccountController {
         return ResponseEntity.ok(accountConverter
                 .toDto(accountService.create(accountConverter.toEntity(account))));
     }
+
+    @DeleteMapping("/{id}")
+    public void remove (@PathVariable("id") Long id){
+        accountService.remove(id);
+    }
 }

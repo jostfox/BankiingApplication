@@ -4,6 +4,8 @@ import org.example.entity.Account;
 import org.example.entity.Client;
 import org.example.exceptions.ItemNotFoundException;
 import org.example.repositories.AccountRepository;
+import org.example.service.handler.FindAccountByHandler;
+import org.example.service.handler.FindById;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,10 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private FindById<Account, AccountRepository> findAccountById;
 
     @Override
     public List<Account> getAll() {
@@ -36,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void remove(Long id) {
-
+        accountRepository.delete(findAccountById.findByIdHandledWithException(id, accountRepository));
     }
 
     @Override

@@ -4,20 +4,25 @@ import org.example.entity.Account;
 import org.example.entity.Client;
 import org.example.entity.Transaction;
 import org.example.exceptions.ItemNotFoundException;
+import org.example.repositories.AccountRepository;
 import org.example.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
-    TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;
 
     @Autowired
-    AccountService accountService;
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private AccountService accountService;
 
     @Override
     public List<Transaction> getAll() {
@@ -47,8 +52,15 @@ public class TransactionServiceImpl implements TransactionService {
             throw new IllegalArgumentException("Not enough amount on account");
         }
 
+        accountFrom.setBalance(accountFrom.getBalance() - amount);
+        accountRepository.save(accountFrom);
+        accountTo.setBalance(accountTo.getBalance() + amount);
+        accountRepository.save(accountTo);
+
+        LocalDateTime createTime =  LocalDateTime.of(2023, 5, 20, 22, 10);
+
         Transaction transaction = new Transaction(accountFrom, accountTo, amount,
-                "description", 1, null);
+                "description", 1, createTime);
         transactionRepository.save(transaction);
     }
 }
