@@ -4,8 +4,10 @@ import org.example.entity.Account;
 import org.example.entity.Client;
 import org.example.entity.Transaction;
 import org.example.exceptions.ItemNotFoundException;
+import org.example.exceptions.NotEnoughFundsException;
 import org.example.repositories.AccountRepository;
 import org.example.repositories.TransactionRepository;
+import org.example.service.handler.FindAccountByIdHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    FindAccountByIdHandler accountByIdHandler;
 
     @Override
     public List<Transaction> getAll() {
@@ -45,11 +50,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void transfer(Long accountOneId, Long accountTwoId, double amount) {
-        Account accountFrom = accountService.getById(accountOneId);
-        Account accountTo = accountService.getById(accountTwoId);
+        Account accountFrom = accountByIdHandler.findByIdHandledWithException(accountOneId, accountRepository);
+        Account accountTo = accountByIdHandler.findByIdHandledWithException(accountTwoId, accountRepository);
 
         if (accountFrom.getBalance() - amount < 0){
-            throw new IllegalArgumentException("Not enough amount on account");
+            throw new NotEnoughFundsException(String.format("Not enough funds on account %s"
+                    , accountFrom.getIban()));
         }
 
         accountFrom.setBalance(accountFrom.getBalance() - amount);
@@ -57,10 +63,9 @@ public class TransactionServiceImpl implements TransactionService {
         accountTo.setBalance(accountTo.getBalance() + amount);
         accountRepository.save(accountTo);
 
-        LocalDateTime createTime =  LocalDateTime.of(2023, 5, 20, 22, 10);
-
-        Transaction transaction = new Transaction(accountFrom, accountTo, amount,
-                "description", 1, createTime);
-        transactionRepository.save(transaction);
+//        Transaction transaction = new Transaction(1L, accountFrom, accountTo, amount,
+//                "description", 1, LocalDateTime.now());
+//
+//        transactionRepository.save(transaction);
     }
 }

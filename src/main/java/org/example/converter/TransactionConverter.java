@@ -1,24 +1,23 @@
 package org.example.converter;
 
-import org.example.dto.TransactionCreateDto;
 import org.example.dto.TransactionDto;
 import org.example.entity.Transaction;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TransactionConverter implements Converter <Transaction, TransactionDto, TransactionCreateDto> {
+public class TransactionConverter implements Converter <Transaction, TransactionDto> {
 
     @Override
     public TransactionDto toDto(Transaction transaction) {
         return new TransactionDto(transaction.getId(), transaction.getCreditAccount(),
-                transaction.getDebitAccount(), transaction.getAmount(), transaction.getDescription());
+                transaction.getDebitAccount(), transaction.getAmount(), null, 0, null);
     }
 
     @Override
-    public Transaction toEntity(TransactionCreateDto transactionCreateDto) {
-        return new Transaction(transactionCreateDto.getCreditAccount(),
-                transactionCreateDto.getDebitAccount(), transactionCreateDto.getAmount(),
-                transactionCreateDto.getDescription(), transactionCreateDto.getType(),
-                transactionCreateDto.getCreatedAt());
+    public Transaction toEntity(TransactionDto transaction) {
+        return new Transaction(transaction.getId(), transaction.getCreditAccount(),
+                transaction.getDebitAccount(), transaction.getAmount(),
+                transaction.getDescription(), transaction.getType(),
+                transaction.getCreatedAt());
     }
 }

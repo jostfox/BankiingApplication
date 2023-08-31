@@ -42,14 +42,16 @@ public class Manager {
         this.products = products;
     }
 
-    public Manager(Long id, String firstName, String lastName, Status status,
-                   String description, LocalDateTime createdAt) {
-        this.id = id;
+    public Manager(String firstName, String lastName, Status status,
+                   String description, LocalDateTime createdAt,
+                   List<Client> clients, List<Product> products) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.status = status;
         this.description = description;
         this.createdAt = createdAt;
+        this.clients = clients;
+        this.products = products;
     }
 
     public Long getId() {
@@ -108,6 +110,13 @@ public class Manager {
         this.products = products;
     }
 
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
 
     @Override
     public String toString() {

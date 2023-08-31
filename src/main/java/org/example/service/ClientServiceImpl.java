@@ -22,9 +22,6 @@ public class ClientServiceImpl implements ClientService {
     ClientRepository clientRepository;
 
     @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
     private FindById<Client, ClientRepository> findClientById;
 
     @Autowired
@@ -61,11 +58,6 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void remove(Long id) {
         Client client = findClientById.findByIdHandledWithException(id, clientRepository);
-        List<Account> accounts = client.getAccounts();
-        for (Account account : accounts) {
-            account.setBalance(0);
-            closeAccount(client.getId(), account.getId());
-        }
         clientRepository.delete(client);
     }
 
@@ -87,45 +79,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public double checkBalance(Long clientId, Long accountId) {
-        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
-        List<Account> accounts = client.getAccounts();
-        for (Account account : accounts) {
-            if (Objects.equals(account.getId(), accountId)) {
-                return account.getBalance();
-            }
-        }
-        throw new ItemNotFoundException(String.format("Account with id %d not found", accountId));
-    }
-
-    @Override
-    public void closeAccount(Long clientId, Long accountId) {
-        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
-        List<Account> accounts = client.getAccounts();
-        for (Account account : accounts) {
-            if (Objects.equals(account.getId(), accountId)) {
-                if (account.getBalance() == 0) {
-                    accountRepository.delete(account);
-                    return;
-                }
-                throw new NotEmptyBalanceException("Balance is not 0.00. You can not close the account");
-            }
-
-        }
-        throw new ItemNotFoundException(String.format("Account with id %d not found", accountId));
-    }
-
-    @Override
-    public void topUpAccount(Long clientId, Long accountId, double amount) {
-        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
-        List<Account> accounts = client.getAccounts();
-        for (Account account : accounts) {
-            if (Objects.equals(account.getId(), accountId)) {
-                account.setBalance(account.getBalance() + amount);
-                accountRepository.save(account);
-                return;
-            }
-        }
-        throw new ItemNotFoundException(String.format("Account with id %d not found", accountId));
+    public List<Client> create(List<Client> clients) {
+        return null;
     }
 }

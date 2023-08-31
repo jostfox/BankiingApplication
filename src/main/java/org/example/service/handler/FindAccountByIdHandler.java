@@ -6,15 +6,11 @@ import org.example.repositories.AccountRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FindAccountByHandler implements FindById<Account, AccountRepository> {
+public class FindAccountByIdHandler implements FindById<Account, AccountRepository> {
 
     @Override
     public Account findByIdHandledWithException(Long id, AccountRepository accountRepository) {
-        Account account = accountRepository.findById(id).orElse(null);
-        if (account == null) {
-            throw new ItemNotFoundException(String.format("Account with id %d not found", id));
-        }
-        return account;
+        return null;
 
     }
 }

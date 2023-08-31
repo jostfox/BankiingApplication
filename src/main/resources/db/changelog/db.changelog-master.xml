@@ -25,14 +25,14 @@
         <comment>Add clients table</comment>
         <createTable tableName="clients">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="client_pkey"/>
+                <constraints primaryKey="true" nullable="true" primaryKeyName="client_pkey"/>
             </column>
             <column name="first_name" type="VARCHAR(50)"/>
             <column name="last_name" type="VARCHAR(50)"/>
             <column name="manager_id" type="BIGINT">
                 <constraints foreignKeyName="manager_fkey"
                              referencedTableName="managers"
-                             referencedColumnNames="id" nullable="false"/>
+                             referencedColumnNames="id" nullable="true"/>
             </column>
             <column name="tax_code" type="VARCHAR(20)"/>
             <column name="address" type="VARCHAR(80)"/>
@@ -47,10 +47,9 @@
     <changeSet id="202308132250215" author="Oleg Rulyov">
         <comment>Add accounts table</comment>
         <createTable tableName="accounts">
-            <column name="id" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="account_pkey"/>
+            <column name="iban" type="VARCHAR(50)">
+                <constraints primaryKey="true" nullable="true" primaryKeyName="account_pkey"/>
             </column>
-            <column name="iban" type="VARCHAR(34)"/>
             <column name="name" type="VARCHAR(50)"/>
             <column name="client_id" type="BIGINT">
                 <constraints foreignKeyName="client_fkey"
@@ -93,10 +92,10 @@
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="agreement_pkey"/>
             </column>
-            <column name="account_id" type="BIGINT">
-                <constraints foreignKeyName="manager_agreem_fkey"
-                             referencedTableName="managers"
-                             referencedColumnNames="id" nullable="false"/>
+            <column name="account" type="VARCHAR(50)">
+                <constraints foreignKeyName="account_agreem_fkey"
+                             referencedTableName="accounts"
+                             referencedColumnNames="iban" nullable="false"/>
             </column>
             <column name="product_id" type="BIGINT">
                 <constraints foreignKeyName="product_fkey"
@@ -117,15 +116,15 @@
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="transaction_pkey"/>
             </column>
-            <column name="debit_account_id" type="BIGINT">
+            <column name="debit_account" type="VARCHAR(50)">
                 <constraints foreignKeyName="account_debit_fkey"
                              referencedTableName="accounts"
-                             referencedColumnNames="id" nullable="false"/>
+                             referencedColumnNames="iban" nullable="false"/>
             </column>
-            <column name="credit_account_id" type="BIGINT">
+            <column name="credit_account" type="VARCHAR(50)">
                 <constraints foreignKeyName="account_credit_fkey"
                              referencedTableName="accounts"
-                             referencedColumnNames="id" nullable="false"/>
+                             referencedColumnNames="iban" nullable="false"/>
             </column>
             <column name="type" type="INT"/>
             <column name="amount" type="NUMERIC(15, 2)"/>
@@ -156,13 +155,13 @@
     <changeSet id="202308182214554" author="Oleg Rulyov">
         <comment>Add entities to accounts</comment>
         <sql>
-            insert into accounts values (1, 'DE13549265487563214568', 'main', 1, 1025.25, 1, 'ACTIVE',
+            insert into accounts values ('DE13549265487563214568', 'main', 1, 1025.25, 1, 'ACTIVE',
                                         'EUR', '2023-08-18', '2023-08-19');
-            insert into accounts values (2, 'DE42168345973589446248', 'investment', 1, 5847.34, 1, 'ACTIVE',
+            insert into accounts values ('DE42168345973589446248', 'investment', 1, 5847.34, 1, 'ACTIVE',
                                          'USD', '2023-08-18', '2023-08-19');
-            insert into accounts values (3, 'DE46829746551234761349', 'main', 2, 387.14, 1, 'ACTIVE',
+            insert into accounts values ('DE46829746551234761349', 'main', 2, 387.14, 1, 'ACTIVE',
                                          'EUR', '2023-08-18', '2023-08-19');
-            insert into accounts values (4, 'DE69485316974628716849', 'budget', 2, 8754.23, 1, 'ACTIVE',
+            insert into accounts values ('DE69485316974628716849', 'budget', 2, 8754.23, 1, 'ACTIVE',
                                          'USD', '2023-08-18', '2023-08-19');
 
         </sql>

@@ -11,33 +11,36 @@ import java.time.LocalDateTime;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String iban;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
-    private String iban;
+
     private String name;
+
     private int type;
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
     private double balance;
+
     @Enumerated(EnumType.STRING)
     private Currency currency;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
     public Account() {
     }
 
-    public Account(Long id, Long clientId, String iban, String name, int type,
+    public Account(String iban, Client client, String name, int type,
                    Status status, double balance, Currency currency,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.client = client;
         this.iban = iban;
+        this.client = client;
         this.name = name;
         this.type = type;
         this.status = status;
@@ -47,12 +50,12 @@ public class Account {
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
-        return id;
+    public String getIban() {
+        return iban;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIban(String iban) {
+        this.iban = iban;
     }
 
     public Client getClient() {
@@ -61,14 +64,6 @@ public class Account {
 
     public void setClient(Client client) {
         this.client = client;
-    }
-
-    public String getIban() {
-        return iban;
-    }
-
-    public void setIban(String iban) {
-        this.iban = iban;
     }
 
     public String getName() {
@@ -130,9 +125,8 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "id=" + id +
+                "iban='" + iban + '\'' +
                 ", client=" + client +
-                ", iban='" + iban + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", status=" + status +

@@ -21,11 +21,7 @@ public interface ClientService {
 
     public Client changeStatus(Long id, Status status);
 
-    public double checkBalance(Long clientId, Long accountId);
-
-    public void closeAccount(Long clientId, Long accountId);
-
-    public void topUpAccount(Long clientId, Long accountId, double amount);
+    List<Client> create(List<Client> clients);
 
 
 

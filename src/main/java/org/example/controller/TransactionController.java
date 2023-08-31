@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.converter.Converter;
-import org.example.dto.TransactionCreateDto;
 import org.example.dto.TransactionDto;
 import org.example.entity.Transaction;
 import org.example.service.TransactionService;
@@ -19,7 +18,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @Autowired
-    private Converter<Transaction, TransactionDto, TransactionCreateDto> transactionConverter;
+    private Converter<Transaction, TransactionDto> transactionConverter;
 
     @GetMapping
     public List<TransactionDto> getAll(){
@@ -32,14 +31,12 @@ public class TransactionController {
         return transactionConverter.toDto(transactionService.getById(id));
     }
 
-    @PostMapping("/{accountFromId}/{accountToId}/{amount}")
+    @PostMapping ("/{accountFromId}/{accountToId}/{amount}")
     public void transfer(@PathVariable("accountFromId") Long accountFrom,
                          @PathVariable("accountToId") Long accountTo,
                          @PathVariable("amount") double amount){
-        try{
-            transactionService.transfer(accountFrom, accountTo, amount);
-        }catch (IllegalArgumentException exception){
-            exception.printStackTrace();
+        transactionService.transfer(accountFrom, accountTo, amount);
+
         }
-    }
+
 }

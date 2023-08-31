@@ -3,13 +3,15 @@ package org.example.service;
 import org.example.entity.Account;
 import org.example.entity.Client;
 import org.example.exceptions.ItemNotFoundException;
+import org.example.exceptions.NotEmptyBalanceException;
 import org.example.repositories.AccountRepository;
-import org.example.service.handler.FindAccountByHandler;
+import org.example.repositories.ClientRepository;
 import org.example.service.handler.FindById;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -18,7 +20,13 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
     private FindById<Account, AccountRepository> findAccountById;
+
+    @Autowired
+    private FindById<Client, ClientRepository> findClientById;
 
     @Override
     public List<Account> getAll() {
@@ -31,23 +39,57 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getById(Long id) {
-        Account account = accountRepository.findById(id).orElse(null);
-        if (account == null){
-            throw new ItemNotFoundException(String.format("Account with id %d not found", id));
+    public Account getByIban(Long clientId, String iban) {
+        Client client = clientRepository.getReferenceById(clientId);
+        List<Account> accounts = client.getAccounts();
+        for (Account account : accounts) {
+            if (account.getIban().equals(iban)) {
+                return account;
+            }
         }
-        return accountRepository.getReferenceById(id);
+        throw new ItemNotFoundException(String.format("Account with IBAN %s not found", iban));
+
     }
 
     @Override
-    public void remove(Long id) {
-        accountRepository.delete(findAccountById.findByIdHandledWithException(id, accountRepository));
-    }
-
-    @Override
-    public Account update(Long id) {
+    public Account update(String iban) {
         return null;
     }
 
+    @Override
+    public double checkBalance(Long clientId, String iban) {
+        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
+        return getByIban(clientId, iban).getBalance();
+    }
 
+    @Override
+    public void closeAccount(Long clientId, String iban) {
+        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
+        Account account = getByIban(clientId, iban);
+        if (account.getBalance() == 0) {
+            accountRepository.delete(account);
+            return;
+        }
+        throw new NotEmptyBalanceException("Balance is not 0.00. You can not close the account");
+    }
+
+
+    @Override
+    public void topUpAccount(Long clientId, String iban, double amount) {
+        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
+        Account account = getByIban(clientId, iban);
+        account.setBalance(account.getBalance() + amount);
+        accountRepository.save(account);
+    }
+
+    @Override
+    public void withdraw(Long clientId, String iban, double amount) {
+        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
+        Account account = getByIban(clientId, iban);
+        account.setBalance(account.getBalance() - amount);
+        accountRepository.save(account);
+
+    }
 }
+
+

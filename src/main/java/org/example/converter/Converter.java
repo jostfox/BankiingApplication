@@ -1,10 +1,8 @@
 package org.example.converter;
 
-public interface Converter <E, D, C>{
+public interface Converter <E, D>{
 
     D toDto(E entity);
 
-    //D toDtoIn(E entity);
-
-    E toEntity(C dto);
+    E toEntity(D dto);
 }

@@ -12,18 +12,28 @@ import java.util.List;
 public class ClientDto {
 
     private long id;
+
     private String firstName;
+
     private String lastName;
+
     private String taxCode;
+
     private String address;
+
     private String phone;
+
     private String email;
+
     @Enumerated
     private Status status;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
+
     private ManagerDto manager;
+
     private List<AccountDto> accounts = new ArrayList<>();
 
     public ClientDto() {
@@ -46,10 +56,6 @@ public class ClientDto {
         this.accounts = accounts;
     }
 
-//    public ClientDto(String firstName, String lastName) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//    }
 
     public long getId() {
         return id;

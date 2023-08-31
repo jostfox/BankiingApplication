@@ -15,23 +15,25 @@ public class ManagerDto {
     private long id;
     private String firstName;
     private String lastName;
-    @Enumerated
     private Status status;
     private String description;
     private LocalDateTime createdAt;
+    private List<Client> clients;
     private List<ProductDto> products = new ArrayList<>();
 
     public ManagerDto() {
     }
 
     public ManagerDto(long id, String firstName, String lastName, Status status,
-                      String description, LocalDateTime createdAt, List<ProductDto> products) {
+                      String description, LocalDateTime createdAt, List<Client> clients,
+                      List<ProductDto> products) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.status = status;
         this.description = description;
         this.createdAt = createdAt;
+        this.clients = clients;
         this.products = products;
     }
 
@@ -84,13 +86,13 @@ public class ManagerDto {
         this.createdAt = createdAt;
     }
 
-    //    public List<ClientDto> getClients() {
-//        return clients;
-//    }
+    public List<Client> getClients() {
+        return clients;
+    }
 
-//    public void setClients(List<ClientDto> clients) {
-//        this.clients = clients;
-//    }
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
 
     public List<ProductDto> getProducts() {
         return products;

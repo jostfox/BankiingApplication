@@ -2,6 +2,8 @@ package org.example.dto;
 
 import org.example.entity.Account;
 
+import java.time.LocalDateTime;
+
 public class TransactionDto {
 
     private Long id;
@@ -9,16 +11,21 @@ public class TransactionDto {
     private Account debitAccount;
     private double amount;
     private String description;
+    private int type;
+    private LocalDateTime createdAt;
 
     public TransactionDto() {
     }
 
-    public TransactionDto(Long id, Account creditAccount, Account debitAccount, double amount, String description) {
+    public TransactionDto(Long id, Account creditAccount, Account debitAccount,
+                          double amount, String description, int type, LocalDateTime createdAt) {
         this.id = id;
         this.creditAccount = creditAccount;
         this.debitAccount = debitAccount;
         this.amount = amount;
         this.description = description;
+        this.type = type;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -61,6 +68,22 @@ public class TransactionDto {
         this.description = description;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "TransactionDto{" +
@@ -69,6 +92,8 @@ public class TransactionDto {
                 ", debitAccount=" + debitAccount +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
+                ", type=" + type +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

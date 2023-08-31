@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.converter.Converter;
-import org.example.dto.ProductCreateDto;
 import org.example.dto.ProductDto;
 import org.example.entity.Product;
 import org.example.service.ProductService;
@@ -20,7 +19,7 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
-    private Converter<Product, ProductDto, ProductCreateDto> productConverter;
+    private Converter<Product, ProductDto> productConverter;
 
     @GetMapping
     List<ProductDto> getAll() {
@@ -35,7 +34,7 @@ public class ProductController {
     }
 
     @PostMapping
-    ResponseEntity<ProductDto> add(@RequestBody ProductCreateDto product) {
+    ResponseEntity<ProductDto> add(@RequestBody ProductDto product) {
         return ResponseEntity.ok(productConverter.toDto(productService
                 .create(productConverter.toEntity(product))));
     }

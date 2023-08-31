@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.converter.Converter;
-import org.example.dto.ClientCreateDto;
 import org.example.dto.ClientDto;
 import org.example.entity.Client;
 import org.example.enums.Status;
@@ -25,7 +24,7 @@ public class ClientController {
     private ClientService clientService;
 
     @Autowired
-    private Converter<Client, ClientDto, ClientCreateDto> clientConverter;
+    private Converter<Client, ClientDto> clientConverter;
 
     @GetMapping
     List<ClientDto> getAll() {
@@ -45,15 +44,9 @@ public class ClientController {
         return clientConverter.toDto(clientService.getByName(firstName, lastName));
     }
 
-    @GetMapping("/{clientId}/accounts/{accountId}/balance/")
-    double checkBalance(@PathVariable("clientId") Long clientId,
-                        @PathVariable("accountId") Long accountId){
-        return clientService.checkBalance(clientId, accountId);
-    }
-
 
     @PostMapping
-    ResponseEntity<ClientDto> add(@RequestBody ClientCreateDto client) {
+    ResponseEntity<ClientDto> add(@RequestBody ClientDto client) {
         return ResponseEntity.ok(clientConverter.toDto(clientService.add(clientConverter.toEntity(client))));
     }
 
@@ -74,21 +67,6 @@ public class ClientController {
         return clientConverter.toDto(clientService.changeStatus(id, status));
     }
 
-    @PutMapping("/{clientId}/accounts/{accountId}/topup/{amount}")
-    public void topUpAccount(@PathVariable("clientId") Long clientId,
-                             @PathVariable("accountId") Long accountId,
-                             @PathVariable("amount") double amount){
-        clientService.topUpAccount(clientId, accountId, amount);
-    }
-
-    @DeleteMapping("/{clientId}/accounts/{accountId}/close")
-    public void closeAccount(@PathVariable("clientId") Long clientId,
-                             @PathVariable("accountId") Long accountId){
-        clientService.closeAccount(clientId, accountId);
-    }
-
-
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public Map<String, String> exceptionHandler(ConstraintViolationException exception) {
@@ -98,6 +76,4 @@ public class ClientController {
         });
         return map;
     }
-
-
 }

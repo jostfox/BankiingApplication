@@ -12,23 +12,26 @@ public class Transaction {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "debit_account_id", referencedColumnName = "id")
+    @JoinColumn(name = "debit_account", referencedColumnName = "iban")
     private Account debitAccount;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "credit_account_id", referencedColumnName = "id")
+    @JoinColumn(name = "credit_account", referencedColumnName = "iban")
     private Account creditAccount;
 
     private int type;
+
     private double amount;
+
     private String description;
+
     private LocalDateTime createdAt;
 
 
     public Transaction() {
     }
 
-    public Transaction(Account creditAccount, Account debitAccount,
+    public Transaction(Long id, Account creditAccount, Account debitAccount,
                        double amount, String description, int type, LocalDateTime createdAt) {
     }
 
@@ -79,6 +82,8 @@ public class Transaction {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

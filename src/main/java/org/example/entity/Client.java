@@ -14,25 +14,31 @@ import java.util.List;
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
     private String firstName;
+
     @NotBlank
     private String lastName;
 
     private String taxCode;
+
     private String address;
+
     private String phone;
+
     private String email;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Manager manager;
 
@@ -53,6 +59,20 @@ public class Client {
                   Status status, LocalDateTime createdAt, LocalDateTime updatedAt,
                   Manager manager) {
         this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.taxCode = taxCode;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Client(String firstName, String lastName, String taxCode, String address,
+                  String phone, String email, Status status, LocalDateTime createdAt,
+                  LocalDateTime updatedAt, Manager manager) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.taxCode = taxCode;

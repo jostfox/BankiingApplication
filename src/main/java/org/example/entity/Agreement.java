@@ -14,8 +14,8 @@ public class Agreement {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account accountId;
+    @JoinColumn(name = "account", referencedColumnName = "iban")
+    private Account account;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -38,12 +38,12 @@ public class Agreement {
         this.id = id;
     }
 
-    public Account getAccountId() {
-        return accountId;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccountId(Account accountId) {
-        this.accountId = accountId;
+    public void setAccount(Account accountId) {
+        this.account = accountId;
     }
 
     public Product getProductId() {
@@ -98,7 +98,7 @@ public class Agreement {
     public String toString() {
         return "Agreement{" +
                 "id=" + id +
-                ", accountId=" + accountId +
+                ", account=" + account +
                 ", productId=" + productId +
                 ", interestRate=" + interestRate +
                 ", status=" + status +

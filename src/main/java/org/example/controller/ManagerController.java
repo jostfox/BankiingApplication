@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.converter.Converter;
-import org.example.dto.ManagerCreateDto;
 import org.example.dto.ManagerDto;
 import org.example.entity.Manager;
 import org.example.service.ManagerService;
@@ -20,7 +19,7 @@ public class ManagerController {
     private ManagerService managerService;
 
     @Autowired
-    private Converter<Manager, ManagerDto, ManagerCreateDto> managerConverter;
+    private Converter<Manager, ManagerDto> managerConverter;
 
     @GetMapping
     List<ManagerDto> getAll() {
@@ -35,7 +34,7 @@ public class ManagerController {
     }
 
     @PostMapping
-    ResponseEntity<ManagerDto> newManager(@RequestBody ManagerCreateDto manager) {
+    ResponseEntity<ManagerDto> newManager(@RequestBody ManagerDto manager) {
         return ResponseEntity.ok(managerConverter.toDto(managerService
                 .create(managerConverter.toEntity(manager))));
     }
