@@ -4,7 +4,8 @@ import org.example.enums.Currency;
 import org.example.enums.Status;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "products")
@@ -13,19 +14,27 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank
     private String name;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Manager manager;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
+
     private double interestRate;
+
     private int prodLimit;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
+    private Timestamp createdAt;
+
+    private Timestamp updatedAt;
 
     public Product() {
     }
@@ -86,16 +95,16 @@ public class Product {
         this.prodLimit = limit;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
-    public LocalDateTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 

@@ -4,6 +4,8 @@ import org.example.dto.TransactionDto;
 import org.example.entity.Transaction;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+
 @Component
 public class TransactionConverter implements Converter <Transaction, TransactionDto> {
 
@@ -18,6 +20,6 @@ public class TransactionConverter implements Converter <Transaction, Transaction
         return new Transaction(transaction.getId(), transaction.getCreditAccount(),
                 transaction.getDebitAccount(), transaction.getAmount(),
                 transaction.getDescription(), transaction.getType(),
-                transaction.getCreatedAt());
+                new Timestamp(System.currentTimeMillis()));
     }
 }

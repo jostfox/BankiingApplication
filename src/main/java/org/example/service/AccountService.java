@@ -1,8 +1,8 @@
 package org.example.service;
 
 import org.example.entity.Account;
-import org.example.entity.Client;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AccountService {
@@ -15,13 +15,13 @@ public interface AccountService {
 
     public Account update(String iban);
 
-    public double checkBalance(Long clientId, String iban);
+    public BigDecimal checkBalance(Long clientId, String iban);
 
     public void closeAccount(Long clientId, String iban);
 
-    public void topUpAccount(Long clientId, String iban, double amount);
+    public void topUpAccount(Long clientId, String iban, BigDecimal amount);
 
-    public void withdraw(Long clientId, String iban, double amount);
+    public void withdraw(Long clientId, String iban, BigDecimal amount);
 
 
 }

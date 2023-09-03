@@ -9,4 +9,6 @@ import javax.annotation.PostConstruct;
 @Repository
 public interface ClientRepository extends JpaRepository <Client, Long> {
 
+    Client findByLogin(String login);
+
 }

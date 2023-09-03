@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.example.enums.Status;
 
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,10 @@ public class ClientDto {
 
     private String lastName;
 
+    private String login;
+
+    private String password;
+
     private String taxCode;
 
     private String address;
@@ -28,9 +34,9 @@ public class ClientDto {
     @Enumerated
     private Status status;
 
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
     private ManagerDto manager;
 
@@ -39,12 +45,15 @@ public class ClientDto {
     public ClientDto() {
     }
 
-    public ClientDto(long id, String firstName, String lastName, String taxCode, String address, String phone,
-                     String email, Status status, LocalDateTime createdAt, LocalDateTime updatedAt,
-                     ManagerDto manager, List<AccountDto> accounts) {
+    public ClientDto(long id, String firstName, String lastName, String login,
+                     String password, String taxCode, String address, String phone,
+                     String email, Status status, Timestamp createdAt,
+                     Timestamp updatedAt, ManagerDto manager, List<AccountDto> accounts) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.login = login;
+        this.password = password;
         this.taxCode = taxCode;
         this.address = address;
         this.phone = phone;
@@ -55,7 +64,6 @@ public class ClientDto {
         this.manager = manager;
         this.accounts = accounts;
     }
-
 
     public long getId() {
         return id;
@@ -79,6 +87,22 @@ public class ClientDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getTaxCode() {
@@ -121,19 +145,19 @@ public class ClientDto {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 

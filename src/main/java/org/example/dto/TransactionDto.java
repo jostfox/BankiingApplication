@@ -2,7 +2,7 @@ package org.example.dto;
 
 import org.example.entity.Account;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class TransactionDto {
 
@@ -12,13 +12,13 @@ public class TransactionDto {
     private double amount;
     private String description;
     private int type;
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     public TransactionDto() {
     }
 
     public TransactionDto(Long id, Account creditAccount, Account debitAccount,
-                          double amount, String description, int type, LocalDateTime createdAt) {
+                          double amount, String description, int type, Timestamp createdAt) {
         this.id = id;
         this.creditAccount = creditAccount;
         this.debitAccount = debitAccount;
@@ -76,11 +76,11 @@ public class TransactionDto {
         this.type = type;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 

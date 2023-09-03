@@ -6,6 +6,7 @@ import org.example.dto.ProductDto;
 import org.example.entity.Manager;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.stream.Collectors;
 
 @Component
@@ -24,6 +25,6 @@ public class ManagerConverter implements Converter<Manager, ManagerDto> {
     @Override
     public Manager toEntity(ManagerDto manager) {
         return new Manager(manager.getFirstName(), manager.getLastName(), manager.getStatus(),
-                manager.getDescription(), null, null, null);
+                manager.getDescription(), new Timestamp(System.currentTimeMillis()), null, null);
     }
 }

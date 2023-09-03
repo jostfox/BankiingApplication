@@ -4,7 +4,8 @@ import org.example.enums.Currency;
 import org.example.enums.Status;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "accounts")
@@ -24,21 +25,21 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private double balance;
+    private BigDecimal balance;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
     public Account() {
     }
 
     public Account(String iban, Client client, String name, int type,
-                   Status status, double balance, Currency currency,
-                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+                   Status status, BigDecimal balance, Currency currency,
+                   Timestamp createdAt, Timestamp updatedAt) {
         this.iban = iban;
         this.client = client;
         this.name = name;
@@ -90,11 +91,11 @@ public class Account {
         this.status = status;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
@@ -106,19 +107,19 @@ public class Account {
         this.currency = currency;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 

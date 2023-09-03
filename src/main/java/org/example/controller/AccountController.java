@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class AccountController {
     }
 
     @GetMapping("/{clientId}/{accountId}/balance")
-    double checkBalance(@PathVariable("clientId") Long clientId,
+    BigDecimal checkBalance(@PathVariable("clientId") Long clientId,
                         @PathVariable("accountId") String iban){
         return accountService.checkBalance(clientId, iban);
     }
@@ -49,7 +50,7 @@ public class AccountController {
     @PostMapping("/{clientId}/{accountId}/topup/{amount}")
     public void topUpAccount(@PathVariable("clientId") Long clientId,
                              @PathVariable("accountId") String iban,
-                             @PathVariable("amount") double amount){
+                             @PathVariable("amount") BigDecimal amount){
         accountService.topUpAccount(clientId, iban, amount);
     }
 

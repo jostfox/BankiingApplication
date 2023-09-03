@@ -5,9 +5,7 @@ import org.example.entity.Client;
 import org.example.enums.Currency;
 import org.example.enums.Status;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccountDto {
@@ -26,9 +24,9 @@ public class AccountDto {
 
     private Currency currency;
 
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
     public AccountDto() {
     }
@@ -40,7 +38,7 @@ public class AccountDto {
 
     public AccountDto(String iban, Client client, Status status, String name,
                       int type, double balance, Currency currency,
-                      LocalDateTime createdAt, LocalDateTime updatedAt) {
+                      Timestamp createdAt, Timestamp updatedAt) {
         this.iban = iban;
         this.client = client;
         this.status = status;
@@ -108,19 +106,19 @@ public class AccountDto {
         this.currency = currency;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 

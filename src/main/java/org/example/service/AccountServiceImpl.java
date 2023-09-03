@@ -10,8 +10,8 @@ import org.example.service.handler.FindById;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -21,12 +21,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private ClientRepository clientRepository;
-
-    @Autowired
-    private FindById<Account, AccountRepository> findAccountById;
-
-    @Autowired
-    private FindById<Client, ClientRepository> findClientById;
 
     @Override
     public List<Account> getAll() {
@@ -38,6 +32,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.save(account);
     }
 
+
     @Override
     public Account getByIban(Long clientId, String iban) {
         Client client = clientRepository.getReferenceById(clientId);
@@ -48,7 +43,6 @@ public class AccountServiceImpl implements AccountService {
             }
         }
         throw new ItemNotFoundException(String.format("Account with IBAN %s not found", iban));
-
     }
 
     @Override
@@ -57,16 +51,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public double checkBalance(Long clientId, String iban) {
-        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
+    public BigDecimal checkBalance(Long clientId, String iban) {
         return getByIban(clientId, iban).getBalance();
     }
 
     @Override
     public void closeAccount(Long clientId, String iban) {
-        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
         Account account = getByIban(clientId, iban);
-        if (account.getBalance() == 0) {
+        if ((account.getBalance().compareTo(BigDecimal.valueOf(0))) == 0) {
             accountRepository.delete(account);
             return;
         }
@@ -75,18 +67,16 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public void topUpAccount(Long clientId, String iban, double amount) {
-        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
+    public void topUpAccount(Long clientId, String iban, BigDecimal amount) {
         Account account = getByIban(clientId, iban);
-        account.setBalance(account.getBalance() + amount);
+        account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
     }
 
     @Override
-    public void withdraw(Long clientId, String iban, double amount) {
-        Client client = findClientById.findByIdHandledWithException(clientId, clientRepository);
+    public void withdraw(Long clientId, String iban, BigDecimal amount) {
         Account account = getByIban(clientId, iban);
-        account.setBalance(account.getBalance() - amount);
+        account.setBalance(account.getBalance().subtract(amount));
         accountRepository.save(account);
 
     }

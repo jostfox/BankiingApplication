@@ -9,8 +9,10 @@ import org.example.repositories.AccountRepository;
 import org.example.repositories.ClientRepository;
 import org.example.service.handler.FindById;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -23,9 +25,6 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private FindById<Client, ClientRepository> findClientById;
-
-    @Autowired
-    private FindById<Account, AccountRepository> findAccountById;
 
     @Override
     public List<Client> getAll() {
@@ -41,13 +40,17 @@ public class ClientServiceImpl implements ClientService {
     public Client getByName(String firstName, String lastName) {
         List<Client> clients = clientRepository.findAll();
         for (Client client : clients) {
-            if (client.getFirstName().equals(firstName) &
-                    client.getLastName().equals(lastName)) {
+            if (client.getFirstName().equals(firstName) & client.getLastName().equals(lastName)) {
                 return client;
             }
         }
-        throw new ItemNotFoundException(String.format("Client %s %s not found",
-                firstName, lastName));
+        throw new ItemNotFoundException(String.format("Client %s %s not found", firstName,
+                lastName));
+    }
+
+    @Override
+    public Client getByLogin(String login) {
+        return clientRepository.findByLogin(login);
     }
 
     @Override
@@ -67,7 +70,7 @@ public class ClientServiceImpl implements ClientService {
         client.setAddress(client.getAddress());
         client.setEmail(client.getEmail());
         client.setPhone(client.getPhone());
-        ;
+        client.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         return clientRepository.save(client);
     }
 
@@ -79,7 +82,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> create(List<Client> clients) {
-        return null;
+    public Client getCurrent() {
+        return getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }

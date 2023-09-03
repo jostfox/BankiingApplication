@@ -1,7 +1,7 @@
 package org.example.entity;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "transactions")
@@ -25,14 +25,14 @@ public class Transaction {
 
     private String description;
 
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
 
     public Transaction() {
     }
 
     public Transaction(Long id, Account creditAccount, Account debitAccount,
-                       double amount, String description, int type, LocalDateTime createdAt) {
+                       double amount, String description, int type, Timestamp createdAt) {
     }
 
     public Long getId() {
@@ -85,11 +85,11 @@ public class Transaction {
 
 
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 

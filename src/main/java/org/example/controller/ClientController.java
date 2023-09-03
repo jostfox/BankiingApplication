@@ -8,6 +8,7 @@ import org.example.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
@@ -17,14 +18,23 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("clients")
+@RequestMapping("api/profile")
 public class ClientController {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ClientService clientService;
 
     @Autowired
     private Converter<Client, ClientDto> clientConverter;
+
+//    @PostMapping
+//    public Client create (Client client){
+//        client.setPassword(passwordEncoder.encode(client.getPassword()));
+//        return clientService.add(client);
+//    }
 
     @GetMapping
     List<ClientDto> getAll() {
@@ -67,13 +77,13 @@ public class ClientController {
         return clientConverter.toDto(clientService.changeStatus(id, status));
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ConstraintViolationException.class)
-    public Map<String, String> exceptionHandler(ConstraintViolationException exception) {
-        Map<String, String> map = new HashMap<>();
-        exception.getConstraintViolations().forEach(error -> {
-            map.put(error.getPropertyPath().toString(), error.getMessage());
-        });
-        return map;
-    }
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public Map<String, String> exceptionHandler(ConstraintViolationException exception) {
+//        Map<String, String> map = new HashMap<>();
+//        exception.getConstraintViolations().forEach(error -> {
+//            map.put(error.getPropertyPath().toString(), error.getMessage());
+//        });
+//        return map;
+//    }
 }

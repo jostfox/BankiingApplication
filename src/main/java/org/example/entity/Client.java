@@ -5,6 +5,7 @@ import org.example.enums.Status;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,11 @@ public class Client {
     @NotBlank
     private String lastName;
 
+    @NotBlank
+    private String login;
+
+    private String password;
+
     private String taxCode;
 
     private String address;
@@ -34,9 +40,9 @@ public class Client {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
-    private LocalDateTime updatedAt;
+    private Timestamp updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
@@ -48,19 +54,15 @@ public class Client {
     public Client() {
     }
 
-    public Client(Long id, String firstName, String lastName) {
+    public Client(Long id, String firstName, String lastName, String login,
+                  String password, String taxCode, String address, String phone,
+                  String email, Status status, Timestamp createdAt,
+                  Timestamp updatedAt, Manager manager, List<Account> accounts) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public Client(Long id, String firstName, String lastName,
-                  String taxCode, String address, String phone, String email,
-                  Status status, LocalDateTime createdAt, LocalDateTime updatedAt,
-                  Manager manager) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.login = login;
+        this.password = password;
         this.taxCode = taxCode;
         this.address = address;
         this.phone = phone;
@@ -68,20 +70,8 @@ public class Client {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public Client(String firstName, String lastName, String taxCode, String address,
-                  String phone, String email, Status status, LocalDateTime createdAt,
-                  LocalDateTime updatedAt, Manager manager) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.taxCode = taxCode;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.manager = manager;
+        this.accounts = accounts;
     }
 
     public Long getId() {
@@ -106,6 +96,22 @@ public class Client {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Manager getManager() {
@@ -164,19 +170,19 @@ public class Client {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -186,8 +192,7 @@ public class Client {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", manager=" + manager +
-                ", accounts=" + accounts +
+                ", login='" + login + '\'' +
                 ", taxCode='" + taxCode + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
@@ -195,6 +200,8 @@ public class Client {
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", manager=" + manager +
+                ", accounts=" + accounts +
                 '}';
     }
 }

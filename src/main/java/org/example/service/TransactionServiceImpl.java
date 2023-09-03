@@ -11,6 +11,7 @@ import org.example.service.handler.FindAccountByIdHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,18 +50,19 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void transfer(Long accountOneId, Long accountTwoId, double amount) {
+    public void transfer(Long accountOneId, Long accountTwoId, BigDecimal amount) {
         Account accountFrom = accountByIdHandler.findByIdHandledWithException(accountOneId, accountRepository);
         Account accountTo = accountByIdHandler.findByIdHandledWithException(accountTwoId, accountRepository);
 
-        if (accountFrom.getBalance() - amount < 0){
-            throw new NotEnoughFundsException(String.format("Not enough funds on account %s"
-                    , accountFrom.getIban()));
+        if (accountFrom.getBalance().subtract(amount)
+                .compareTo(new BigDecimal("0")) < 0){
+            throw new NotEnoughFundsException(String.format("Not enough funds on account %s",
+                     accountFrom.getIban()));
         }
 
-        accountFrom.setBalance(accountFrom.getBalance() - amount);
+        accountFrom.setBalance(accountFrom.getBalance().subtract(amount));
         accountRepository.save(accountFrom);
-        accountTo.setBalance(accountTo.getBalance() + amount);
+        accountTo.setBalance(accountTo.getBalance().add(amount));
         accountRepository.save(accountTo);
 
 //        Transaction transaction = new Transaction(1L, accountFrom, accountTo, amount,

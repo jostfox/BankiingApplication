@@ -14,6 +14,8 @@ public interface ClientService {
 
     public Client getByName(String firstName, String lastName);
 
+    public Client getByLogin(String login);
+
     public Client add(Client client);
 
     public void remove(Long id);
@@ -21,8 +23,5 @@ public interface ClientService {
 
     public Client changeStatus(Long id, Status status);
 
-    List<Client> create(List<Client> clients);
-
-
-
+    public Client getCurrent();
 }

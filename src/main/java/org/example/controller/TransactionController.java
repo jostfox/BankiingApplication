@@ -7,6 +7,7 @@ import org.example.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class TransactionController {
     @PostMapping ("/{accountFromId}/{accountToId}/{amount}")
     public void transfer(@PathVariable("accountFromId") Long accountFrom,
                          @PathVariable("accountToId") Long accountTo,
-                         @PathVariable("amount") double amount){
+                         @PathVariable("amount") BigDecimal amount){
         transactionService.transfer(accountFrom, accountTo, amount);
 
         }

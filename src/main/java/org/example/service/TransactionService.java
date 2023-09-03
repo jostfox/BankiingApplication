@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.entity.Transaction;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TransactionService {
@@ -12,5 +13,5 @@ public interface TransactionService {
 
     public Transaction create(Transaction transaction);
 
-    public void transfer(Long accountOneId, Long accountTwoId, double amount);
+    public void transfer(Long accountOneId, Long accountTwoId, BigDecimal amount);
 }

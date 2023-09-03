@@ -29,6 +29,8 @@
             </column>
             <column name="first_name" type="VARCHAR(50)"/>
             <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)"/>
+            <column name="password" type="VARCHAR(50)"/>
             <column name="manager_id" type="BIGINT">
                 <constraints foreignKeyName="manager_fkey"
                              referencedTableName="managers"
@@ -133,36 +135,47 @@
         </createTable>
     </changeSet>
 
-<!--    Test data for initializing tables -->
+    <!--    Test data for initializing tables -->
     <changeSet id="202308182135156" author="Oleg Rulyov">
         <comment>Add entities to manager</comment>
         <sql>
-            insert into managers values (1, 'Michael', 'Wecker', 'ACTIVE', 'Credits', '2023-08-18');
-            insert into managers values (2, 'Julia', 'Alyaskina', 'ACTIVE', 'Accredetives', '2023-08-17')
+            insert into managers
+            values (1, 'Michael', 'Wecker', 'ACTIVE', 'Credits', '2023-08-18');
+            insert into managers
+            values (2, 'Julia', 'Alyaskina', 'ACTIVE', 'Accredetives', '2023-08-17')
         </sql>
     </changeSet>
 
     <changeSet id="202308182204548" author="Oleg Rulyov">
         <comment>Add entities to clients</comment>
         <sql>
-            insert into clients values (1, 'Alex', 'Schmidt', 1, '2314332421', 'Lange str. 15', '+492662626266',
-                                        'sdfksdfs@gmail.com', 'ACTIVE', '2023-08-18', '2023-08-19');
-            insert into clients values (2, 'Melissa', 'Krutcsh', 2, '2354983421', 'Essener str. 455', '+491612626266',
-                                        'zczsdwds@gmail.com', 'ACTIVE', '2023-08-18', '2023-08-19')
+            insert into clients
+            values (1, 'Alex', 'Schmidt', 'alexsch', 'alex12345', 1, '2314332421',
+                    'Lange str.15', '+492662626266', 'sdfksdfs@gmail.com', 'ACTIVE',
+                    '2023-08-18', '2023-08-19');
+            insert into clients
+            values (2, 'Melissa', 'Krutcsh', 'melon', 'mel1225', 2,
+                    '2354983421', 'Essener str. 455', '+491612626266', 'zczsdwds@gmail.com',
+                    'ACTIVE',
+                    '2023-08-18', '2023-08-19')
         </sql>
     </changeSet>
 
     <changeSet id="202308182214554" author="Oleg Rulyov">
         <comment>Add entities to accounts</comment>
         <sql>
-            insert into accounts values ('DE13549265487563214568', 'main', 1, 1025.25, 1, 'ACTIVE',
-                                        'EUR', '2023-08-18', '2023-08-19');
-            insert into accounts values ('DE42168345973589446248', 'investment', 1, 5847.34, 1, 'ACTIVE',
-                                         'USD', '2023-08-18', '2023-08-19');
-            insert into accounts values ('DE46829746551234761349', 'main', 2, 387.14, 1, 'ACTIVE',
-                                         'EUR', '2023-08-18', '2023-08-19');
-            insert into accounts values ('DE69485316974628716849', 'budget', 2, 8754.23, 1, 'ACTIVE',
-                                         'USD', '2023-08-18', '2023-08-19');
+            insert into accounts
+            values ('DE13549265487563214568', 'main', 1, 1025.25, 1, 'ACTIVE',
+                    'EUR', '2023-08-18', '2023-08-19');
+            insert into accounts
+            values ('DE42168345973589446248', 'investment', 1, 5847.34, 1, 'ACTIVE',
+                    'USD', '2023-08-18', '2023-08-19');
+            insert into accounts
+            values ('DE46829746551234761349', 'main', 2, 387.14, 1, 'ACTIVE',
+                    'EUR', '2023-08-18', '2023-08-19');
+            insert into accounts
+            values ('DE69485316974628716849', 'budget', 2, 8754.23, 1, 'ACTIVE',
+                    'USD', '2023-08-18', '2023-08-19');
 
         </sql>
     </changeSet>
@@ -170,10 +183,16 @@
     <changeSet id="202308182227548" author="Oleg Rulyov">
         <comment>Add entities to products</comment>
         <sql>
-            insert into products values (1, 1, 'Consumer credit', 'ACTIVE', 'EUR', 4.2, 45.2,  '2023-08-19', '2023-08-19');
-            insert into products values (2, 1, 'Accredetiv', 'ACTIVE', 'USD', 1.1, 8.0,  '2023-08-19', '2023-08-19');
-            insert into products values (3, 2, 'Consumer credit', 'ACTIVE', 'EUR', 4.2, 45.2,  '2023-08-19', '2023-08-19');
-            insert into products values (4, 2, 'Mortgage', 'INACTIVE', 'EUR', 1.89, 3.24,  '2023-08-19', '2023-08-19');
+            insert into products
+            values (1, 1, 'Consumer credit', 'ACTIVE', 'EUR', 4.2, 45.2, '2023-08-19',
+                    '2023-08-19');
+            insert into products
+            values (2, 1, 'Accredetiv', 'ACTIVE', 'USD', 1.1, 8.0, '2023-08-19', '2023-08-19');
+            insert into products
+            values (3, 2, 'Consumer credit', 'ACTIVE', 'EUR', 4.2, 45.2, '2023-08-19',
+                    '2023-08-19');
+            insert into products
+            values (4, 2, 'Mortgage', 'INACTIVE', 'EUR', 1.89, 3.24, '2023-08-19', '2023-08-19');
 
         </sql>
     </changeSet>

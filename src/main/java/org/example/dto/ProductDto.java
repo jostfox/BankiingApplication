@@ -8,7 +8,9 @@ import java.util.List;
 public class ProductDto {
 
     private long id;
+
     private String name;
+
     private ManagerDto manager;
 
     public ProductDto() {

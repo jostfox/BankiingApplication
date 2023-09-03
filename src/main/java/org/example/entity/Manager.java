@@ -3,7 +3,8 @@ package org.example.entity;
 import org.example.enums.Status;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +15,19 @@ public class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
+
     @Enumerated(EnumType.STRING)
     private Status status;
+
     private String description;
-    private LocalDateTime createdAt;
+
+    private Timestamp createdAt;
 
     @OneToMany(mappedBy = "manager")
     List<Client> clients = new ArrayList<>();
@@ -32,7 +40,7 @@ public class Manager {
 
     public Manager(Long id, String firstName, String lastName,
                    Status status, String description,
-                   LocalDateTime createdAt, List<Product> products) {
+                   Timestamp createdAt, List<Product> products) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,7 +51,7 @@ public class Manager {
     }
 
     public Manager(String firstName, String lastName, Status status,
-                   String description, LocalDateTime createdAt,
+                   String description, Timestamp createdAt,
                    List<Client> clients, List<Product> products) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -94,11 +102,11 @@ public class Manager {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
