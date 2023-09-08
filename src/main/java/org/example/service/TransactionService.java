@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface TransactionService {
 
-    public List<Transaction> getAll();
+    List<Transaction> getAll();
 
-    public Transaction getById(Long id);
+    Transaction getById(Long id);
 
-    public Transaction create(Transaction transaction);
+    Transaction transfer(String accountOneId, String accountTwoId, BigDecimal amount);
 
-    public void transfer(Long accountOneId, Long accountTwoId, BigDecimal amount);
+    void delete(Long id);
 }

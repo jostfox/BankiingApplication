@@ -31,9 +31,10 @@ public class AccountDto {
     public AccountDto() {
     }
 
-    public AccountDto(String iban, Status status) {
+    public AccountDto(String iban, Status status, double balance) {
         this.iban = iban;
         this.status = status;
+        this.balance = balance;
     }
 
     public AccountDto(String iban, Client client, Status status, String name,

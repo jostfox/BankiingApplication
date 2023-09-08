@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -34,15 +35,25 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public Account getByIban(Long clientId, String iban) {
-        Client client = clientRepository.getReferenceById(clientId);
-        List<Account> accounts = client.getAccounts();
-        for (Account account : accounts) {
-            if (account.getIban().equals(iban)) {
-                return account;
-            }
+    public Account getByIban(String iban) {
+
+        Account account = accountRepository.findById(iban)
+                .orElseThrow(() -> new ItemNotFoundException(String.format("Account with IBAN %s not found", iban)));
+        Long clientId = null;
+        if (!account.getClient().getId().equals(clientId)) {
+            //exception
         }
-        throw new ItemNotFoundException(String.format("Account with IBAN %s not found", iban));
+
+        return account;
+
+//        Client client = clientRepository.getReferenceById(clientId);
+//        List<Account> accounts = client.getAccounts();
+//        for (Account account : accounts) {
+//            if (account.getIban().equals(iban)) {
+//                return account;
+//            }
+//        }
+//        throw new ItemNotFoundException(String.format("Account with IBAN %s not found", iban));
     }
 
     @Override
@@ -52,12 +63,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public BigDecimal checkBalance(Long clientId, String iban) {
-        return getByIban(clientId, iban).getBalance();
+        return getByIban( iban).getBalance();
     }
 
     @Override
     public void closeAccount(Long clientId, String iban) {
-        Account account = getByIban(clientId, iban);
+        Account account = getByIban(iban);
         if ((account.getBalance().compareTo(BigDecimal.valueOf(0))) == 0) {
             accountRepository.delete(account);
             return;
@@ -68,17 +79,16 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void topUpAccount(Long clientId, String iban, BigDecimal amount) {
-        Account account = getByIban(clientId, iban);
+        Account account = getByIban( iban);
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
     }
 
     @Override
     public void withdraw(Long clientId, String iban, BigDecimal amount) {
-        Account account = getByIban(clientId, iban);
+        Account account = getByIban(iban);
         account.setBalance(account.getBalance().subtract(amount));
         accountRepository.save(account);
-
     }
 }
 

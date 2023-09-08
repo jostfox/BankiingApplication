@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.entity.Client;
 import org.example.entity.Product;
 import org.example.exceptions.ItemNotFoundException;
 import org.example.repositories.ProductRepository;
@@ -13,7 +12,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Override
     public List<Product> getAll() {
@@ -23,10 +22,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getById(Long id) {
         Product product = productRepository.findById(id).orElse(null);
-        if (product == null){
+        if (product == null) {
             throw new ItemNotFoundException(String.format("Product with id %d not found", id));
         }
-        return productRepository.getReferenceById(id);
+        return product;
     }
 
     @Override

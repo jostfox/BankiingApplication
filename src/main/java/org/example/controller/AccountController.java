@@ -32,7 +32,7 @@ public class AccountController {
     @GetMapping("/{clientId}/{iban}")
     AccountDto getByIban(@PathVariable("clientId") Long clientId,
                          @PathVariable("iban") String iban){
-        return accountConverter.toDto(accountService.getByIban(clientId, iban));
+        return accountConverter.toDto(accountService.getByIban(iban));
     }
 
     @PostMapping

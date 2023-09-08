@@ -23,5 +23,5 @@ public interface ClientService {
 
     public Client changeStatus(Long id, Status status);
 
-    public Client getCurrent();
+    //public Client getCurrent();
 }

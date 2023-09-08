@@ -13,7 +13,9 @@ public class ProductConverter implements Converter<Product, ProductDto> {
         return new ProductDto(product.getId(), product.getName(),
                 new ManagerDto(product.getManager().getId(),
                         product.getManager().getFirstName(),
-                        product.getManager().getLastName(), null,null, null, null, null));
+                        product.getManager().getLastName(), null, null,
+                        null,null, null, null,
+                        null));
     }
 
     @Override

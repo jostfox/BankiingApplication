@@ -15,6 +15,8 @@
             </column>
             <column name="first_name" type="VARCHAR(50)"/>
             <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)"/>
+            <column name="password" type="VARCHAR(100)"/>
             <column name="status" type="VARCHAR(10)"/>
             <column name="description" type="VARCHAR(255)"/>
             <column name="created_at" type="TIMESTAMP"/>
@@ -30,7 +32,7 @@
             <column name="first_name" type="VARCHAR(50)"/>
             <column name="last_name" type="VARCHAR(50)"/>
             <column name="login" type="VARCHAR(50)"/>
-            <column name="password" type="VARCHAR(50)"/>
+            <column name="password" type="VARCHAR(100)"/>
             <column name="manager_id" type="BIGINT">
                 <constraints foreignKeyName="manager_fkey"
                              referencedTableName="managers"
@@ -56,7 +58,7 @@
             <column name="client_id" type="BIGINT">
                 <constraints foreignKeyName="client_fkey"
                              referencedTableName="clients"
-                             referencedColumnNames="id" nullable="false"/>
+                             referencedColumnNames="id" nullable="true"/>
             </column>
             <column name="balance" type="NUMERIC(15, 2)"/>
             <column name="type" type="INT"/>
@@ -69,8 +71,8 @@
 
     <changeSet id="202308132301458" author="Oleg Rulyov">
         <comment>Add products table</comment>
-        <createTable tableName="products">
-            <column name="id" type="BIGINT">
+        <createTable tableName="products" >
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="product_pkey"/>
             </column>
             <column name="manager_id" type="BIGINT">
@@ -91,7 +93,7 @@
     <changeSet id="202308132310684" author="Oleg Rulyov">
         <comment>Add agreements table</comment>
         <createTable tableName="agreements">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="agreement_pkey"/>
             </column>
             <column name="account" type="VARCHAR(50)">
@@ -115,27 +117,27 @@
     <changeSet id="202308132342154" author="Oleg Rulyov">
         <comment>Add transactions table</comment>
         <createTable tableName="transactions">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="transaction_pkey"/>
             </column>
             <column name="debit_account" type="VARCHAR(50)">
                 <constraints foreignKeyName="account_debit_fkey"
                              referencedTableName="accounts"
-                             referencedColumnNames="iban" nullable="false"/>
+                             referencedColumnNames="iban" nullable="true"/>
             </column>
             <column name="credit_account" type="VARCHAR(50)">
                 <constraints foreignKeyName="account_credit_fkey"
                              referencedTableName="accounts"
-                             referencedColumnNames="iban" nullable="false"/>
+                             referencedColumnNames="iban" nullable="true"/>
             </column>
-            <column name="type" type="INT"/>
+            <column name="type" type="VARCHAR(10)"/>
             <column name="amount" type="NUMERIC(15, 2)"/>
             <column name="description" type="VARCHAR(255)"/>
             <column name="created_at" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
 
-    <!--    Test data for initializing tables -->
+    <!--&lt;!&ndash;    Test data for initializing tables &ndash;&gt;
     <changeSet id="202308182135156" author="Oleg Rulyov">
         <comment>Add entities to manager</comment>
         <sql>
@@ -195,5 +197,5 @@
             values (4, 2, 'Mortgage', 'INACTIVE', 'EUR', 1.89, 3.24, '2023-08-19', '2023-08-19');
 
         </sql>
-    </changeSet>
+    </changeSet>-->
 </databaseChangeLog>

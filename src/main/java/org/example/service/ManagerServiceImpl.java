@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.entity.Client;
 import org.example.entity.Manager;
 import org.example.exceptions.ItemNotFoundException;
 import org.example.repositories.ManagerRepository;
@@ -13,7 +12,7 @@ import java.util.List;
 public class ManagerServiceImpl implements ManagerService {
 
     @Autowired
-    ManagerRepository managerRepository;
+    private ManagerRepository managerRepository;
 
     @Override
     public List<Manager> getAll() {
@@ -28,10 +27,10 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public Manager getById(Long id) {
         Manager manager = managerRepository.findById(id).orElse(null);
-        if (manager == null){
+        if (manager == null) {
             throw new ItemNotFoundException(String.format("Manager with id %d not found", id));
         }
-        return managerRepository.getReferenceById(id);
+        return manager;
     }
 
     @Override

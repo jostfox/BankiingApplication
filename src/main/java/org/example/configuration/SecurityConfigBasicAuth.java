@@ -1,3 +1,4 @@
+/*
 package org.example.configuration;
 
 import org.example.service.CustomClientDetailService;
@@ -41,3 +42,4 @@ public class SecurityConfigBasicAuth extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 }
+*/

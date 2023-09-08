@@ -1,24 +1,31 @@
 package org.example.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.example.entity.Account;
+import org.example.enums.TransactionType;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransactionDto {
 
     private Long id;
-    private Account creditAccount;
-    private Account debitAccount;
-    private double amount;
+    private String creditAccount;
+    private String debitAccount;
+    private BigDecimal amount;
     private String description;
-    private int type;
+    private TransactionType type;
     private Timestamp createdAt;
 
     public TransactionDto() {
+        //
     }
 
-    public TransactionDto(Long id, Account creditAccount, Account debitAccount,
-                          double amount, String description, int type, Timestamp createdAt) {
+    public TransactionDto(Long id, String creditAccount, String debitAccount,
+                          BigDecimal amount, String description, TransactionType type, Timestamp createdAt) {
         this.id = id;
         this.creditAccount = creditAccount;
         this.debitAccount = debitAccount;
@@ -36,27 +43,27 @@ public class TransactionDto {
         this.id = id;
     }
 
-    public Account getCreditAccount() {
+    public String getCreditAccount() {
         return creditAccount;
     }
 
-    public void setCreditAccount(Account creditAccount) {
+    public void setCreditAccount(String creditAccount) {
         this.creditAccount = creditAccount;
     }
 
-    public Account getDebitAccount() {
+    public String getDebitAccount() {
         return debitAccount;
     }
 
-    public void setDebitAccount(Account debitAccount) {
+    public void setDebitAccount(String debitAccount) {
         this.debitAccount = debitAccount;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -68,11 +75,11 @@ public class TransactionDto {
         this.description = description;
     }
 
-    public int getType() {
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 

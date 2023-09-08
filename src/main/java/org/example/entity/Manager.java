@@ -13,7 +13,7 @@ import java.util.List;
 public class Manager {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -21,6 +21,11 @@ public class Manager {
 
     @NotBlank
     private String lastName;
+
+    @NotBlank
+    private String login;
+
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -38,29 +43,21 @@ public class Manager {
     public Manager() {
     }
 
-    public Manager(Long id, String firstName, String lastName,
-                   Status status, String description,
-                   Timestamp createdAt, List<Product> products) {
+    public Manager(Long id, String firstName, String lastName, String login, String password,
+                   Status status, String description, Timestamp createdAt, List<Client> clients,
+                   List<Product> products) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.status = status;
-        this.description = description;
-        this.createdAt = createdAt;
-        this.products = products;
-    }
-
-    public Manager(String firstName, String lastName, Status status,
-                   String description, Timestamp createdAt,
-                   List<Client> clients, List<Product> products) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.login = login;
+        this.password = password;
         this.status = status;
         this.description = description;
         this.createdAt = createdAt;
         this.clients = clients;
         this.products = products;
     }
+
 
     public Long getId() {
         return id;
@@ -84,6 +81,22 @@ public class Manager {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Status getStatus() {
@@ -128,14 +141,6 @@ public class Manager {
 
     @Override
     public String toString() {
-        return "Manager{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", status=" + status +
-                ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
-                ", products=" + products +
-                '}';
+        return "Manager{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", status=" + status + '\'' + ", description='" + description + '\'' + ", createdAt=" + createdAt + '\'' + ", clients=" + clients + '\'' + ", products=" + products + '}';
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClientDto {
 
-    private long id;
+    private Long id;
 
     private String firstName;
 
@@ -45,10 +45,10 @@ public class ClientDto {
     public ClientDto() {
     }
 
-    public ClientDto(long id, String firstName, String lastName, String login,
-                     String password, String taxCode, String address, String phone,
-                     String email, Status status, Timestamp createdAt,
-                     Timestamp updatedAt, ManagerDto manager, List<AccountDto> accounts) {
+    public ClientDto(Long id, String firstName, String lastName, String login, String password,
+                     String taxCode, String address, String phone, String email, Status status,
+                     Timestamp createdAt, Timestamp updatedAt, ManagerDto manager,
+                     List<AccountDto> accounts) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -65,11 +65,17 @@ public class ClientDto {
         this.accounts = accounts;
     }
 
-    public long getId() {
+    public ClientDto(Long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -179,19 +185,6 @@ public class ClientDto {
 
     @Override
     public String toString() {
-        return "ClientDto{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", taxCode='" + taxCode + '\'' +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", manager=" + manager +
-                ", accounts=" + accounts +
-                '}';
+        return "ClientDto{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", taxCode='" + taxCode + '\'' + ", address='" + address + '\'' + ", phone='" + phone + '\'' + ", email='" + email + '\'' + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", manager=" + manager + ", accounts=" + accounts + '}';
     }
 }

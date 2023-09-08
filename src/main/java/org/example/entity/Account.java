@@ -127,7 +127,7 @@ public class Account {
     public String toString() {
         return "Account{" +
                 "iban='" + iban + '\'' +
-                ", client=" + client +
+                ", client=" + client.getFirstName() + " " + client.getLastName() +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", status=" + status +

@@ -8,35 +8,48 @@ import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ManagerDto {
 
     private long id;
+
     private String firstName;
+
     private String lastName;
+
+    private String login;
+
+    private String password;
+
     private Status status;
+
     private String description;
+
     private LocalDateTime createdAt;
-    private List<Client> clients;
+
+    private List<ClientDto> clients;
+
     private List<ProductDto> products = new ArrayList<>();
 
     public ManagerDto() {
     }
 
-    public ManagerDto(long id, String firstName, String lastName, Status status,
-                      String description, LocalDateTime createdAt, List<Client> clients,
-                      List<ProductDto> products) {
+    public ManagerDto(long id, String firstName, String lastName, String login, String password,
+                      Status status, String description, LocalDateTime createdAt,
+                      List<ClientDto> clients, List<ProductDto> products) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.login = login;
+        this.password = password;
         this.status = status;
         this.description = description;
         this.createdAt = createdAt;
         this.clients = clients;
         this.products = products;
     }
-
 
     public long getId() {
         return id;
@@ -60,6 +73,22 @@ public class ManagerDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Status getStatus() {
@@ -86,11 +115,11 @@ public class ManagerDto {
         this.createdAt = createdAt;
     }
 
-    public List<Client> getClients() {
+    public List<ClientDto> getClients() {
         return clients;
     }
 
-    public void setClients(List<Client> clients) {
+    public void setClients(List<ClientDto> clients) {
         this.clients = clients;
     }
 
@@ -104,14 +133,6 @@ public class ManagerDto {
 
     @Override
     public String toString() {
-        return "ManagerDto{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", status=" + status +
-                ", description='" + description + '\'' +
-                ", createdAt=" + createdAt +
-                ", products=" + products +
-                '}';
+        return "ManagerDto{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", status=" + status + ", description='" + description + '\'' + ", createdAt=" + createdAt + ", clients=" + clients + ", products=" + products + '}';
     }
 }

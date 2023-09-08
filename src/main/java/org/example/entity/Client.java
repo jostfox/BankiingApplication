@@ -1,12 +1,10 @@
 package org.example.entity;
 
-import org.example.dto.ManagerDto;
 import org.example.enums.Status;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,16 +46,17 @@ public class Client {
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Manager manager;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.REMOVE)
     List<Account> accounts = new ArrayList<>();
 
     public Client() {
+        //
     }
 
-    public Client(Long id, String firstName, String lastName, String login,
-                  String password, String taxCode, String address, String phone,
-                  String email, Status status, Timestamp createdAt,
-                  Timestamp updatedAt, Manager manager, List<Account> accounts) {
+    public Client(Long id, String firstName, String lastName, String login, String password,
+                  String taxCode, String address, String phone, String email, Status status,
+                  Timestamp createdAt, Timestamp updatedAt, Manager manager,
+                  List<Account> accounts) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,6 +70,25 @@ public class Client {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.manager = manager;
+        this.accounts = accounts;
+    }
+
+    public Client(Long id, String firstName, String lastName, String login, String password,
+                  String taxCode, String address, String phone, String email, Status status,
+                  Timestamp createdAt, Timestamp updatedAt, Long managerId,
+                  List<Account> accounts) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.login = login;
+        this.password = password;
+        this.taxCode = taxCode;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.accounts = accounts;
     }
 
@@ -188,20 +206,6 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", login='" + login + '\'' +
-                ", taxCode='" + taxCode + '\'' +
-                ", address='" + address + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", manager=" + manager +
-                ", accounts=" + accounts +
-                '}';
+        return "Client{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", taxCode='" + taxCode + '\'' + ", address='" + address + '\'' + ", phone='" + phone + '\'' + ", email='" + email + '\'' + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", manager=" + manager.getFirstName() + ", accounts=" + accounts + '}';
     }
 }

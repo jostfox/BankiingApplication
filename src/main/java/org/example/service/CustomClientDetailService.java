@@ -1,3 +1,4 @@
+/*
 package org.example.service;
 
 import org.example.entity.Client;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 
 @Service
-public class  CustomClientDetailService implements UserDetailsService {
+public class  CustomClientDetailService  implements UserDetailsService{
 
     @Autowired
     private ClientService clientService;
@@ -31,3 +32,4 @@ public class  CustomClientDetailService implements UserDetailsService {
     }
 }
 
+*/

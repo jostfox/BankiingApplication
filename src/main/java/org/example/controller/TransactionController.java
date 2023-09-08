@@ -22,22 +22,27 @@ public class TransactionController {
     private Converter<Transaction, TransactionDto> transactionConverter;
 
     @GetMapping
-    public List<TransactionDto> getAll(){
+    public List<TransactionDto> getAll() {
         return transactionService.getAll().stream().
                 map(transactionConverter::toDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public TransactionDto getById(@PathVariable("id") Long id){
+    public TransactionDto getById(@PathVariable("id") Long id) {
         return transactionConverter.toDto(transactionService.getById(id));
     }
 
-    @PostMapping ("/{accountFromId}/{accountToId}/{amount}")
-    public void transfer(@PathVariable("accountFromId") Long accountFrom,
-                         @PathVariable("accountToId") Long accountTo,
-                         @PathVariable("amount") BigDecimal amount){
-        transactionService.transfer(accountFrom, accountTo, amount);
+    @PostMapping("/{accountFromId}/{accountToId}/{amount}")
+    public TransactionDto transfer(@PathVariable("accountFromId") String accountFrom,
+                                   @PathVariable("accountToId") String accountTo,
+                                   @PathVariable("amount") BigDecimal amount) {
+        Transaction transaction = transactionService.transfer(accountFrom, accountTo, amount);
 
-        }
+        return transactionConverter.toDto(transaction);
+    }
 
+    @DeleteMapping("/{id}")
+    public void remove(@PathVariable("id") Long id) {
+        transactionService.delete(id);
+    }
 }

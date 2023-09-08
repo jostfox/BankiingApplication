@@ -1,6 +1,9 @@
 package org.example.entity;
 
+import org.example.enums.TransactionType;
+
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
@@ -8,31 +11,38 @@ import java.sql.Timestamp;
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "debit_account", referencedColumnName = "iban")
     private Account debitAccount;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "credit_account", referencedColumnName = "iban")
     private Account creditAccount;
 
-    private int type;
+    @Enumerated(value = EnumType.STRING)
+    private TransactionType type;
 
-    private double amount;
+    private BigDecimal amount;
 
     private String description;
 
     private Timestamp createdAt;
 
-
     public Transaction() {
+        //
     }
 
-    public Transaction(Long id, Account creditAccount, Account debitAccount,
-                       double amount, String description, int type, Timestamp createdAt) {
+    public Transaction(Account debitAccount, Account creditAccount, TransactionType type, BigDecimal amount,
+                       String description, Timestamp createdAt) {
+        this.debitAccount = debitAccount;
+        this.creditAccount = creditAccount;
+        this.type = type;
+        this.amount = amount;
+        this.description = description;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -59,19 +69,19 @@ public class Transaction {
         this.creditAccount = creditAccountId;
     }
 
-    public int getType() {
+    public TransactionType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(TransactionType type) {
         this.type = type;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -82,8 +92,6 @@ public class Transaction {
     public void setDescription(String description) {
         this.description = description;
     }
-
-
 
     public Timestamp getCreatedAt() {
         return createdAt;

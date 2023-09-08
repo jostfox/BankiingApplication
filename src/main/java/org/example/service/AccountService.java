@@ -9,7 +9,7 @@ public interface AccountService {
 
     public List<Account> getAll();
 
-    public Account getByIban(Long clientId, String iban);
+    public Account getByIban(String iban);
 
     public Account create(Account account);
 
