@@ -54,6 +54,11 @@ public class ClientController {
         return clientConverter.toDto(clientService.getByName(firstName, lastName));
     }
 
+    @GetMapping("/login/{login}")
+    ClientDto getByLogin(@PathVariable("login") String login){
+        return clientConverter.toDto(clientService.getByLogin(login));
+    }
+
 
     @PostMapping
     ResponseEntity<ClientDto> add(@RequestBody ClientDto client) {

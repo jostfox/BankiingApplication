@@ -32,19 +32,18 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getByName(String firstName, String lastName) {
-        List<Client> clients = clientRepository.findAll();
-        for (Client client : clients) {
-            if (client.getFirstName().equals(firstName) & client.getLastName().equals(lastName)) {
-                return client;
-            }
-        }
-        throw new ItemNotFoundException(String.format("Client %s %s not found", firstName,
-                lastName));
+        return getAll().stream()
+                .filter(client -> client.getFirstName().equals(firstName) & client.getLastName().equals(lastName))
+                .findFirst().orElseThrow(() ->
+                        new ItemNotFoundException(String.format("Client " + "%s %s not found", firstName, lastName)));
     }
 
     @Override
     public Client getByLogin(String login) {
-        return clientRepository.findByLogin(login);
+        return getAll().stream()
+                .filter(client -> client.getLogin().equals(login)).findFirst()
+                .orElseThrow(() ->
+                        new ItemNotFoundException(String.format("Client " + "with login \"%s\" not found", login)));
     }
 
     @Override
@@ -54,16 +53,15 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void remove(Long id) {
-        Client client = getById(id);
-        clientRepository.delete(client);
+        clientRepository.delete(getById(id));
     }
 
     @Override
     public Client update(Long id) {
         Client client = getById(id);
-        client.setAddress(client.getAddress());
-        client.setEmail(client.getEmail());
-        client.setPhone(client.getPhone());
+        if (client.getAddress() != null) client.setAddress(client.getAddress());
+        if (client.getEmail() != null) client.setEmail(client.getEmail());
+        if (client.getPhone() != null) client.setPhone(client.getPhone());
         client.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         return clientRepository.save(client);
     }

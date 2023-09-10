@@ -54,9 +54,9 @@ public class AccountController {
         accountService.topUpAccount(clientId, iban, amount);
     }
 
-    @DeleteMapping("/{clientId}/{accountId}/close")
+    @DeleteMapping("/{clientId}/{iban}/close")
     public void closeAccount(@PathVariable("clientId") Long clientId,
-                             @PathVariable("accountId") String iban){
+                             @PathVariable("iban") String iban){
         accountService.closeAccount(clientId, iban);
     }
 }

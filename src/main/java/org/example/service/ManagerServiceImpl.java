@@ -6,6 +6,7 @@ import org.example.repositories.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -26,25 +27,32 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public Manager getById(Long id) {
-        Manager manager = managerRepository.findById(id).orElse(null);
-        if (manager == null) {
-            throw new ItemNotFoundException(String.format("Manager with id %d not found", id));
-        }
-        return manager;
+        return managerRepository.findById(id).orElseThrow(() ->
+                new ItemNotFoundException(String.format("Manager with id %d not found", id)));
     }
 
     @Override
     public Manager getByName(String firstName, String lastName) {
-        return null;
+        return getAll().stream().filter(manager -> manager.getFirstName().equals(firstName) &
+                        manager.getLastName().equals(lastName))
+                .findFirst().orElseThrow(() -> new ItemNotFoundException(String.format("Manager " +
+                        "%s %s not found", firstName, lastName)));
+    }
+
+    @Override
+    public Manager getByLogin(String login) {
+        return getAll().stream().filter(manager -> manager.getLogin().equals(login))
+                .findFirst().orElseThrow(() -> new ItemNotFoundException(String.format("Manager " +
+                        "with login \"%s\" not found", login)));
     }
 
     @Override
     public void remove(Long id) {
-
+        managerRepository.delete(getById(id));
     }
 
     @Override
     public Manager update(Long id) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

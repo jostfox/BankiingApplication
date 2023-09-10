@@ -137,14 +137,15 @@
         </createTable>
     </changeSet>
 
-    <!--&lt;!&ndash;    Test data for initializing tables &ndash;&gt;
-    <changeSet id="202308182135156" author="Oleg Rulyov">
+    <!--    Test data for initializing tables -->
+    <!--<changeSet id="202308182135156" author="Oleg Rulyov">
         <comment>Add entities to manager</comment>
         <sql>
             insert into managers
-            values (1, 'Michael', 'Wecker', 'ACTIVE', 'Credits', '2023-08-18');
+            values (1, 'Michael', 'Wecker', 'micha', 'mich5555', 'ACTIVE', 'Credits', '2023-08-18');
             insert into managers
-            values (2, 'Julia', 'Alyaskina', 'ACTIVE', 'Accredetives', '2023-08-17')
+            values (2, 'Julia', 'Alyaskina', 'july', 'alys7777', 'ACTIVE', 'Accredetives',
+                    '2023-08-17')
         </sql>
     </changeSet>
 

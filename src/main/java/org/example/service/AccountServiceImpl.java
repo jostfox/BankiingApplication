@@ -36,14 +36,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getByIban(String iban) {
-
         Account account = accountRepository.findById(iban)
                 .orElseThrow(() -> new ItemNotFoundException(String.format("Account with IBAN %s not found", iban)));
         Long clientId = null;
         if (!account.getClient().getId().equals(clientId)) {
             //exception
         }
-
         return account;
 
 //        Client client = clientRepository.getReferenceById(clientId);
@@ -63,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public BigDecimal checkBalance(Long clientId, String iban) {
-        return getByIban( iban).getBalance();
+        return getByIban(iban).getBalance();
     }
 
     @Override

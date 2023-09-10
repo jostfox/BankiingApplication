@@ -5,6 +5,7 @@ import org.example.dto.ClientDto;
 import org.example.dto.ManagerDto;
 import org.example.entity.Client;
 import org.example.entity.Manager;
+import org.example.enums.Status;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -18,7 +19,7 @@ public class ClientConverter implements Converter<Client, ClientDto> {
                 client.getLogin(), null, null, null, null, null, null, null, null,
                 client.getManager() == null ? null : new ManagerDto(client.getManager().getId(),
                         client.getManager().getFirstName(), client.getManager().getLastName(),
-                        null, null, null, client.getManager().getDescription(), null, null, null)
+                        null, null, null, null, null, null, null)
                 , client.getAccounts() == null ? null :
                 client.getAccounts().stream().map(account -> new AccountDto(account.getIban(),
                         account.getStatus(), account.getBalance() == null ? 0.0 :
@@ -30,7 +31,7 @@ public class ClientConverter implements Converter<Client, ClientDto> {
     public Client toEntity(ClientDto client) {
         return new Client(client.getId(), client.getFirstName(), client.getLastName(),
                 client.getLogin(), client.getPassword(), client.getTaxCode(), client.getAddress()
-                , client.getPhone(), client.getEmail(), client.getStatus(),
+                , client.getPhone(), client.getEmail(), Status.ACTIVE,
                 new Timestamp(System.currentTimeMillis()),
                 new Timestamp(System.currentTimeMillis()), (Manager) null, null);
     }

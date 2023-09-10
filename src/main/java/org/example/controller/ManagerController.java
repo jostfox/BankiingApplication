@@ -34,8 +34,10 @@ public class ManagerController {
     }
 
     @PostMapping
-    ResponseEntity<ManagerDto> newManager(@RequestBody ManagerDto manager) {
+    ResponseEntity<ManagerDto> add (@RequestBody ManagerDto manager) {
         return ResponseEntity.ok(managerConverter.toDto(managerService
                 .create(managerConverter.toEntity(manager))));
     }
+
+
 }

@@ -12,6 +12,8 @@ public interface ManagerService {
 
     public Manager getByName(String firstName, String lastName);
 
+    public Manager getByLogin(String login);
+
     public Manager create(Manager manager);
 
     public void remove(Long id);
