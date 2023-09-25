@@ -16,12 +16,9 @@ public interface ClientService {
 
     public Client getByLogin(String login);
 
-    public Client add(Client client);
+    public Client save (Client client);
 
-    public void remove(Long id);
-    public Client update(Long id);
+    public void remove();
 
-    public Client changeStatus(Long id, Status status);
-
-    //public Client getCurrent();
+    public Client getCurrent();
 }

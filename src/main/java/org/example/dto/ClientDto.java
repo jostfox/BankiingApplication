@@ -1,6 +1,7 @@
 package org.example.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.example.enums.Roles;
 import org.example.enums.Status;
 
 import javax.persistence.Enumerated;
@@ -42,13 +43,15 @@ public class ClientDto {
 
     private List<AccountDto> accounts = new ArrayList<>();
 
+    private Roles role;
+
     public ClientDto() {
     }
 
     public ClientDto(Long id, String firstName, String lastName, String login, String password,
                      String taxCode, String address, String phone, String email, Status status,
                      Timestamp createdAt, Timestamp updatedAt, ManagerDto manager,
-                     List<AccountDto> accounts) {
+                     List<AccountDto> accounts, Roles role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -63,6 +66,7 @@ public class ClientDto {
         this.updatedAt = updatedAt;
         this.manager = manager;
         this.accounts = accounts;
+        this.role = role;
     }
 
     public ClientDto(Long id, String firstName, String lastName) {
@@ -183,8 +187,16 @@ public class ClientDto {
         this.accounts = accounts;
     }
 
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        return "ClientDto{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", taxCode='" + taxCode + '\'' + ", address='" + address + '\'' + ", phone='" + phone + '\'' + ", email='" + email + '\'' + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", manager=" + manager + ", accounts=" + accounts + '}';
+        return "ClientDto{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", password='" + password + '\'' + ", taxCode='" + taxCode + '\'' + ", address='" + address + '\'' + ", phone='" + phone + '\'' + ", email='" + email + '\'' + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", manager=" + manager + ", accounts=" + accounts + '}';
     }
 }

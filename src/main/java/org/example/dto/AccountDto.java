@@ -2,6 +2,7 @@ package org.example.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.example.entity.Client;
+import org.example.enums.AccountType;
 import org.example.enums.Currency;
 import org.example.enums.Status;
 
@@ -18,7 +19,7 @@ public class AccountDto {
 
     private String name;
 
-    private int type;
+    private AccountType type;
 
     private double balance;
 
@@ -38,7 +39,7 @@ public class AccountDto {
     }
 
     public AccountDto(String iban, Client client, Status status, String name,
-                      int type, double balance, Currency currency,
+                      AccountType type, double balance, Currency currency,
                       Timestamp createdAt, Timestamp updatedAt) {
         this.iban = iban;
         this.client = client;
@@ -83,11 +84,11 @@ public class AccountDto {
         this.name = name;
     }
 
-    public int getType() {
+    public AccountType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(AccountType type) {
         this.type = type;
     }
 

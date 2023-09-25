@@ -6,6 +6,7 @@ import org.example.entity.Account;
 import org.example.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("accounts")
+@RequestMapping("/api/accounts")
 public class AccountController {
 
     @Autowired
@@ -23,40 +24,51 @@ public class AccountController {
     private Converter<Account, AccountDto> accountConverter;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('permission:admin')")
     List<AccountDto> getAll() {
         return accountService.getAll().stream()
                 .map(account -> accountConverter.toDto(account))
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{clientId}/{iban}")
-    AccountDto getByIban(@PathVariable("clientId") Long clientId,
-                         @PathVariable("iban") String iban){
+    @GetMapping("/{iban}")
+    @PreAuthorize("hasAuthority('permission:admin')")
+    AccountDto getByIban(@PathVariable("iban") String iban){
         return accountConverter.toDto(accountService.getByIban(iban));
     }
 
     @PostMapping
-    ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto account) {
+    @PreAuthorize("hasAuthority('permission:user')")
+    ResponseEntity<AccountDto> create(@RequestBody AccountDto account) {
         return ResponseEntity.ok(accountConverter
                 .toDto(accountService.create(accountConverter.toEntity(account))));
     }
 
-    @GetMapping("/{clientId}/{accountId}/balance")
-    BigDecimal checkBalance(@PathVariable("clientId") Long clientId,
-                        @PathVariable("accountId") String iban){
-        return accountService.checkBalance(clientId, iban);
+    @GetMapping("/{account}/balance")
+    @PreAuthorize("hasAuthority('permission:user')")
+    BigDecimal checkBalance(@PathVariable("account") String iban){
+        return accountService.checkBalance(iban);
     }
 
-    @PostMapping("/{clientId}/{accountId}/topup/{amount}")
-    public void topUpAccount(@PathVariable("clientId") Long clientId,
-                             @PathVariable("accountId") String iban,
-                             @PathVariable("amount") BigDecimal amount){
-        accountService.topUpAccount(clientId, iban, amount);
+    @PostMapping("/{iban}/topup/{amount}")
+    @PreAuthorize("hasAuthority('permission:user')")
+    ResponseEntity <BigDecimal> topUp(@PathVariable("iban") String iban,
+                      @PathVariable("amount") BigDecimal amount){
+        return ResponseEntity.ok(accountService.topUp(iban,
+                amount));
     }
 
-    @DeleteMapping("/{clientId}/{iban}/close")
-    public void closeAccount(@PathVariable("clientId") Long clientId,
-                             @PathVariable("iban") String iban){
-        accountService.closeAccount(clientId, iban);
+    @PostMapping("/{iban}/withdraw/{amount}")
+    @PreAuthorize("hasAuthority('permission:user')")
+    ResponseEntity <BigDecimal> withdraw(@PathVariable("iban") String iban,
+                         @PathVariable("amount") BigDecimal amount){
+        return ResponseEntity.ok(accountService.withdraw(iban, amount));
+
+    }
+
+    @DeleteMapping("/{iban}/close")
+    @PreAuthorize("hasAuthority('permission:user')")
+    public void close(@PathVariable("iban") String iban){
+        accountService.close(iban);
     }
 }

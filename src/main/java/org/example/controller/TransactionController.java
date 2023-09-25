@@ -32,7 +32,7 @@ public class TransactionController {
         return transactionConverter.toDto(transactionService.getById(id));
     }
 
-    @PostMapping("/{accountFrom}/{accountTo}/{amount}")
+    @PutMapping("/{accountFrom}/{accountTo}/{amount}")
     public TransactionDto transfer(@PathVariable("accountFrom") String accountFrom,
                                    @PathVariable("accountTo") String accountTo,
                                    @PathVariable("amount") BigDecimal amount) {

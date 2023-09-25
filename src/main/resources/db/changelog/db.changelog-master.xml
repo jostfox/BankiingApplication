@@ -7,6 +7,19 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
 
+    <changeSet id="202309240143565" author="Oleg Rulyov">
+        <comment>Add admin table</comment>
+        <createTable tableName="admins">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="admin_pkey"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)"/>
+            <column name="password" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
     <changeSet id="202308132232456" author="Oleg Rulyov">
         <comment>Add managers table</comment>
         <createTable tableName="managers">
@@ -16,7 +29,7 @@
             <column name="first_name" type="VARCHAR(50)"/>
             <column name="last_name" type="VARCHAR(50)"/>
             <column name="login" type="VARCHAR(50)"/>
-            <column name="password" type="VARCHAR(100)"/>
+            <column name="password" type="VARCHAR(255)"/>
             <column name="status" type="VARCHAR(10)"/>
             <column name="description" type="VARCHAR(255)"/>
             <column name="created_at" type="TIMESTAMP"/>
@@ -32,7 +45,7 @@
             <column name="first_name" type="VARCHAR(50)"/>
             <column name="last_name" type="VARCHAR(50)"/>
             <column name="login" type="VARCHAR(50)"/>
-            <column name="password" type="VARCHAR(100)"/>
+            <column name="password" type="VARCHAR(255)"/>
             <column name="manager_id" type="BIGINT">
                 <constraints foreignKeyName="manager_fkey"
                              referencedTableName="managers"
@@ -45,6 +58,7 @@
             <column name="status" type="VARCHAR(10)"/>
             <column name="created_at" type="TIMESTAMP"/>
             <column name="updated_at" type="TIMESTAMP"/>
+            <column name="role" type="VARCHAR(20)"/>
         </createTable>
     </changeSet>
 
@@ -61,7 +75,7 @@
                              referencedColumnNames="id" nullable="true"/>
             </column>
             <column name="balance" type="NUMERIC(15, 2)"/>
-            <column name="type" type="INT"/>
+            <column name="type" type="VARCHAR(20)"/>
             <column name="status" type="VARCHAR(10)"/>
             <column name="currency" type="VARCHAR(3)"/>
             <column name="created_at" type="TIMESTAMP"/>
@@ -71,7 +85,7 @@
 
     <changeSet id="202308132301458" author="Oleg Rulyov">
         <comment>Add products table</comment>
-        <createTable tableName="products" >
+        <createTable tableName="products">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="product_pkey"/>
             </column>
@@ -138,13 +152,27 @@
     </changeSet>
 
     <!--    Test data for initializing tables -->
-    <!--<changeSet id="202308182135156" author="Oleg Rulyov">
+    <changeSet id="20230924014866" author="Oleg Rulyov">
+        <comment>Add entities to admin</comment>
+        <sql>
+            insert into admins
+            values (1, 'Jack', 'Brown', 'admin',
+                    '$2a$10$4OLitf1j./3.EkPiMX812uDFeXCb/SpNtXiFASDFRfZw.pWAa.8nW');
+        </sql>
+    </changeSet>
+
+    <changeSet id="202308182135156" author="Oleg Rulyov">
         <comment>Add entities to manager</comment>
         <sql>
             insert into managers
-            values (1, 'Michael', 'Wecker', 'micha', 'mich5555', 'ACTIVE', 'Credits', '2023-08-18');
+            values (1, 'Michael', 'Wecker', 'micha',
+                    '$2a$10$V3Mu6Z3CQg3c/kK/ztm/4O21v4nX2rHjIr6pAohrZWFAN4EcXm8jK', 'ACTIVE',
+                    'Credits',
+                    '2023-08-18');
             insert into managers
-            values (2, 'Julia', 'Alyaskina', 'july', 'alys7777', 'ACTIVE', 'Accredetives',
+            values (2, 'Julia', 'Alyaskina', 'july',
+                    '$2a$10$f1I5C0Tg8Q4eTMaU8ailReO15GJCVVdsAoutrQXHoHUZc9cAESwh6', 'ACTIVE',
+                    'Accredetives',
                     '2023-08-17')
         </sql>
     </changeSet>
@@ -153,14 +181,20 @@
         <comment>Add entities to clients</comment>
         <sql>
             insert into clients
-            values (1, 'Alex', 'Schmidt', 'alexsch', 'alex12345', 1, '2314332421',
+            values (1, 'Alex', 'Schmidt', 'alexsch',
+                    '$2a$10$dUN1JYBBMOvRcR7MM1qBoeKYQzHc5hTsrdM6l44D.PmOt7gMtly7a', 1, '2314332421',
                     'Lange str.15', '+492662626266', 'sdfksdfs@gmail.com', 'ACTIVE',
-                    '2023-08-18', '2023-08-19');
+                    '2023-08-18', '2023-08-19', 'USER');
             insert into clients
-            values (2, 'Melissa', 'Krutcsh', 'melon', 'mel1225', 2,
+            values (2, 'Melissa', 'Krutcsh', 'melon',
+                    '$2a$10$yMMiJoCxFAouHkMcdyhZfukM30geioVWPY5UXfRreObq.y7kt/Oi.', 2,
                     '2354983421', 'Essener str. 455', '+491612626266', 'zczsdwds@gmail.com',
-                    'ACTIVE',
-                    '2023-08-18', '2023-08-19')
+                    'ACTIVE', '2023-08-18', '2023-08-19', 'USER');
+            insert into clients
+            values (3, 'Jack', 'Daniels', 'admin',
+                    '$2a$10$SGBbA03h8Rjx0QoC/chfIOusiweSTUo3Yt4EdMsuwDyENjTVZcqa6', null,
+                    null, null, null, null,
+                    'ACTIVE', null, null, 'ADMIN');
         </sql>
     </changeSet>
 
@@ -168,16 +202,16 @@
         <comment>Add entities to accounts</comment>
         <sql>
             insert into accounts
-            values ('DE13549265487563214568', 'main', 1, 1025.25, 1, 'ACTIVE',
+            values ('DE13549265487563214568', 'main', 1, 1025.25, 'CHECKING', 'ACTIVE',
                     'EUR', '2023-08-18', '2023-08-19');
             insert into accounts
-            values ('DE42168345973589446248', 'investment', 1, 5847.34, 1, 'ACTIVE',
+            values ('DE42168345973589446248', 'investment', 1, 5847.34, 'SAVINGS', 'ACTIVE',
                     'USD', '2023-08-18', '2023-08-19');
             insert into accounts
-            values ('DE46829746551234761349', 'main', 2, 387.14, 1, 'ACTIVE',
+            values ('DE46829746551234761349', 'main', 2, 387.14, 'CHECKING', 'ACTIVE',
                     'EUR', '2023-08-18', '2023-08-19');
             insert into accounts
-            values ('DE69485316974628716849', 'budget', 2, 8754.23, 1, 'ACTIVE',
+            values ('DE69485316974628716849', 'budget', 2, 8754.23, 'INVESTMENT', 'ACTIVE',
                     'USD', '2023-08-18', '2023-08-19');
 
         </sql>
@@ -198,5 +232,21 @@
             values (4, 2, 'Mortgage', 'INACTIVE', 'EUR', 1.89, 3.24, '2023-08-19', '2023-08-19');
 
         </sql>
+    </changeSet>
+
+    <!--<changeSet id="202309102315548" author="Oleg Rulyov">
+        <comment>Change initial point of autoincrement</comment>
+        <sql>
+            ALTER TABLE clients
+                ALTER COLUMN id RESTART WITH 4;
+            ALTER TABLE managers
+                ALTER COLUMN id RESTART WITH 3;
+            ALTER TABLE products
+                ALTER COLUMN id RESTART WITH 5;
+
+
+        </sql>
     </changeSet>-->
+
+
 </databaseChangeLog>

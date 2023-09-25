@@ -11,7 +11,7 @@ public interface TransactionService {
 
     Transaction getById(Long id);
 
-    Transaction transfer(String accountOneId, String accountTwoId, BigDecimal amount);
+    Transaction transfer(String creditIban, String debitIban, BigDecimal amount);
 
     void delete(Long id);
 }

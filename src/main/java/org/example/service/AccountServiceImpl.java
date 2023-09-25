@@ -21,9 +21,10 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientServiceImpl clientService;
 
     @Override
+
     public List<Account> getAll() {
         return accountRepository.findAll();
     }
@@ -36,37 +37,19 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getByIban(String iban) {
-        Account account = accountRepository.findById(iban)
+        return accountRepository.findById(iban)
                 .orElseThrow(() -> new ItemNotFoundException(String.format("Account with IBAN %s not found", iban)));
-        Long clientId = null;
-        if (!account.getClient().getId().equals(clientId)) {
-            //exception
-        }
-        return account;
 
-//        Client client = clientRepository.getReferenceById(clientId);
-//        List<Account> accounts = client.getAccounts();
-//        for (Account account : accounts) {
-//            if (account.getIban().equals(iban)) {
-//                return account;
-//            }
-//        }
-//        throw new ItemNotFoundException(String.format("Account with IBAN %s not found", iban));
     }
 
     @Override
-    public Account update(String iban) {
-        return null;
+    public BigDecimal checkBalance(String iban) {
+        return getClientAccountByIban(iban).getBalance();
     }
 
     @Override
-    public BigDecimal checkBalance(Long clientId, String iban) {
-        return getByIban(iban).getBalance();
-    }
-
-    @Override
-    public void closeAccount(Long clientId, String iban) {
-        Account account = getByIban(iban);
+    public void close(String iban) {
+        Account account = getClientAccountByIban(iban);
         if ((account.getBalance().compareTo(BigDecimal.valueOf(0))) == 0) {
             accountRepository.delete(account);
             return;
@@ -76,17 +59,30 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public void topUpAccount(Long clientId, String iban, BigDecimal amount) {
-        Account account = getByIban( iban);
+    public BigDecimal topUp(String iban, BigDecimal amount) {
+        Account account = getClientAccountByIban(iban);
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
+        return account.getBalance();
     }
 
     @Override
-    public void withdraw(Long clientId, String iban, BigDecimal amount) {
-        Account account = getByIban(iban);
+    public BigDecimal withdraw(String iban, BigDecimal amount) {
+        Account account = getClientAccountByIban(iban);
         account.setBalance(account.getBalance().subtract(amount));
         accountRepository.save(account);
+        return account.getBalance();
+    }
+
+    public Account getClientAccountByIban(String iban){
+        Client client = clientService.getCurrent();
+        String clientsIban =
+                client.getAccounts().stream()
+                        .map(Account::getIban).filter(accountIban -> accountIban.equals(iban))
+                        .findFirst().orElseThrow(() -> new ItemNotFoundException(String.format(
+                                "Account " + "with IBAN %s not found or " +
+                                "does not belong to you", iban)));
+        return getByIban(clientsIban);
     }
 }
 

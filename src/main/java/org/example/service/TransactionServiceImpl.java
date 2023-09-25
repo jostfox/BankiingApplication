@@ -27,6 +27,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     FindAccountByIdHandler accountByIdHandler;
 
+    @Autowired
+    ClientService clientService;
+
     @Override
     public List<Transaction> getAll() {
         return transactionRepository.findAll();
@@ -39,20 +42,21 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction transfer(String debetIban, String creditIban, BigDecimal amount) {
-        Account accountDebit = accountService.getByIban(debetIban);
-        Account accountCredit = accountService.getByIban(creditIban);
+    public Transaction transfer(String creditIban, String debitIban, BigDecimal amount) {
+        Account accountCredit = accountService.getClientAccountByIban(creditIban);
+        Account accountDebit = accountService.getByIban(debitIban);
 
-        if (accountDebit.getBalance().subtract(amount)
+        if (accountCredit.getBalance().subtract(amount)
                 .compareTo(new BigDecimal("0")) < 0) {
             throw new NotEnoughFundsException(String.format("Not enough funds on account %s",
-                    accountDebit.getIban()));
+                    accountCredit.getIban()));
         }
 
-        accountDebit.setBalance(accountDebit.getBalance().subtract(amount));
-        accountCredit.setBalance(accountCredit.getBalance().add(amount));
+        accountCredit.setBalance(accountCredit.getBalance().subtract(amount));
+        accountDebit.setBalance(accountDebit.getBalance().add(amount));
 
-        Transaction transaction = new Transaction(accountDebit, accountCredit, TransactionType.SUCCESS, amount,
+        Transaction transaction = new Transaction(accountCredit, accountDebit, TransactionType.SUCCESS
+                , amount,
                 "description", new Timestamp(System.currentTimeMillis()));
 
         return transactionRepository.save(transaction);

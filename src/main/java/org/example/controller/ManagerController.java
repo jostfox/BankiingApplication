@@ -6,14 +6,18 @@ import org.example.entity.Manager;
 import org.example.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("managers")
+@RequestMapping("/api/managers")
 public class ManagerController {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ManagerService managerService;
@@ -35,6 +39,7 @@ public class ManagerController {
 
     @PostMapping
     ResponseEntity<ManagerDto> add (@RequestBody ManagerDto manager) {
+        manager.setPassword(passwordEncoder.encode(manager.getPassword()));
         return ResponseEntity.ok(managerConverter.toDto(managerService
                 .create(managerConverter.toEntity(manager))));
     }

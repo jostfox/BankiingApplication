@@ -8,6 +8,7 @@ import org.example.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -19,17 +20,20 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
+    //Admin`s method
     @Override
     public List<Client> getAll() {
         return clientRepository.findAll();
     }
 
+    //Admin`s method
     @Override
     public Client getById(Long id) {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ItemNotFoundException(String.format("Client with id %d not found", id)));
     }
 
+    //Admin`s method
     @Override
     public Client getByName(String firstName, String lastName) {
         return getAll().stream()
@@ -38,43 +42,26 @@ public class ClientServiceImpl implements ClientService {
                         new ItemNotFoundException(String.format("Client " + "%s %s not found", firstName, lastName)));
     }
 
+    //Admin`s method
     @Override
     public Client getByLogin(String login) {
-        return getAll().stream()
-                .filter(client -> client.getLogin().equals(login)).findFirst()
-                .orElseThrow(() ->
-                        new ItemNotFoundException(String.format("Client " + "with login \"%s\" not found", login)));
+        return clientRepository.findByLogin(login).orElseThrow(() ->
+                new ItemNotFoundException(String.format("Client "
+                        + "with login \"%s\" not found", login)));
     }
 
     @Override
-    public Client add(Client client) {
+    public Client save (Client client) {
         return clientRepository.save(client);
     }
 
     @Override
-    public void remove(Long id) {
-        clientRepository.delete(getById(id));
+    public void remove() {
+        clientRepository.delete(getCurrent());
     }
 
     @Override
-    public Client update(Long id) {
-        Client client = getById(id);
-        if (client.getAddress() != null) client.setAddress(client.getAddress());
-        if (client.getEmail() != null) client.setEmail(client.getEmail());
-        if (client.getPhone() != null) client.setPhone(client.getPhone());
-        client.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        return clientRepository.save(client);
+    public Client getCurrent() {
+        return getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
     }
-
-    @Override
-    public Client changeStatus(Long id, Status status) {
-        Client client = getById(id);
-        client.setStatus(status);
-        return clientRepository.save(client);
-    }
-
-//    @Override
-//    public Client getCurrent() {
-//        return getByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
-//    }
 }

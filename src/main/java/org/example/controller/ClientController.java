@@ -3,93 +3,94 @@ package org.example.controller;
 import org.example.converter.Converter;
 import org.example.dto.ClientDto;
 import org.example.entity.Client;
-import org.example.enums.Status;
 import org.example.service.ClientService;
+import org.example.service.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
 
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
-import java.util.HashMap;
+
+
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("clients")
+@RequestMapping("/api/clients")
 public class ClientController {
 
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private ClientService clientService;
+    private ClientServiceImpl clientService;
 
     @Autowired
     private Converter<Client, ClientDto> clientConverter;
 
-//    @PostMapping
-//    public Client create (ClientDto client){
-//        client.setPassword(passwordEncoder.encode(client.getPassword()));
-//        return clientService.add(clientConverter.toEntity(client));
-//    }
-
+    //Admin`s method
     @GetMapping
+    @PreAuthorize("hasAuthority('permission:admin')")
     List<ClientDto> getAll() {
         return clientService.getAll().stream().map(clientConverter::toDto).collect(Collectors.toList());
     }
 
+    //Admin`s method
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('permission:admin')")
     ClientDto getById(@PathVariable("id") Long id) {
         return clientConverter.toDto(clientService.getById(id));
     }
 
+    //Admin`s method
     @GetMapping("/{firstName}/{lastName}")
+    @PreAuthorize("hasAuthority('permission:admin')")
     ClientDto getByName(@PathVariable("firstName") String firstName,
                         @PathVariable("lastName") String lastName) {
         return clientConverter.toDto(clientService.getByName(firstName, lastName));
     }
 
+    //Admin`s method
     @GetMapping("/login/{login}")
-    ClientDto getByLogin(@PathVariable("login") String login){
+    @PreAuthorize("hasAuthority('permission:admin')")
+    ClientDto getByLogin(@PathVariable("login") String login) {
         return clientConverter.toDto(clientService.getByLogin(login));
     }
 
 
     @PostMapping
     ResponseEntity<ClientDto> add(@RequestBody ClientDto client) {
-        //client.setPassword(passwordEncoder.encode(client.getPassword()));
-        return ResponseEntity.ok(clientConverter.toDto(clientService
-                .add(clientConverter.toEntity(client))));
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
+        return ResponseEntity.ok(clientConverter.toDto(clientService.save(clientConverter.toEntity(client))));
     }
 
-    @DeleteMapping("/{id}")
-    public void remove(@PathVariable("id") Long id) {
-        clientService.remove(id);
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAuthority('permission:user')")
+    public void remove() {
+        clientService.remove();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Client> update(@PathVariable("id") Long id, @RequestBody Client client) {
-        return ResponseEntity.ok(clientService.update(id));
+    @PutMapping("/update")
+    @PreAuthorize("hasAuthority('permission:user')")
+    public ResponseEntity<ClientDto> update(@RequestBody ClientDto clientDto) {
+        Client client = clientService.getCurrent();
+        if (clientDto.getPhone() != null) client.setPhone(clientDto.getPhone());
+        if (clientDto.getEmail() != null) client.setEmail(clientDto.getEmail());
+        if (clientDto.getAddress() != null) client.setAddress(clientDto.getAddress());
+        clientService.save(client);
+        return ResponseEntity.ok(clientConverter.toDto(client));
     }
 
-    @PutMapping("/{id}/status/{status}")
-    public ClientDto changeStatus(@PathVariable("id") Long id,
-                                  @PathVariable("status") Status status) {
-        return clientConverter.toDto(clientService.changeStatus(id, status));
+    @PutMapping("/status")
+    @PreAuthorize("hasAuthority('permission:manager')")
+    public ResponseEntity<ClientDto> changeStatus(@RequestBody ClientDto clientDto) {
+        Client client = clientService.getCurrent();
+        client.setStatus(clientDto.getStatus());
+        clientService.save(client);
+        return ResponseEntity.ok(clientConverter.toDto(client));
     }
-
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    public Map<String, String> exceptionHandler(ConstraintViolationException exception) {
-//        Map<String, String> map = new HashMap<>();
-//        exception.getConstraintViolations().forEach(error -> {
-//            map.put(error.getPropertyPath().toString(), error.getMessage());
-//        });
-//        return map;
-//    }
 }

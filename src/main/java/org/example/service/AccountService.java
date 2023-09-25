@@ -13,15 +13,15 @@ public interface AccountService {
 
     public Account create(Account account);
 
-    public Account update(String iban);
+    public BigDecimal checkBalance(String iban);
 
-    public BigDecimal checkBalance(Long clientId, String iban);
+    public void close(String iban);
 
-    public void closeAccount(Long clientId, String iban);
+    public BigDecimal topUp(String iban, BigDecimal amount);
 
-    public void topUpAccount(Long clientId, String iban, BigDecimal amount);
+    public BigDecimal withdraw(String iban, BigDecimal amount);
 
-    public void withdraw(Long clientId, String iban, BigDecimal amount);
+    public Account getClientAccountByIban(String iban);
 
 
 }

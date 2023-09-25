@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import org.example.enums.AccountType;
 import org.example.enums.Currency;
 import org.example.enums.Status;
 
@@ -20,7 +21,8 @@ public class Account {
 
     private String name;
 
-    private int type;
+    @Enumerated(EnumType.STRING)
+    private AccountType type;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -37,7 +39,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(String iban, Client client, String name, int type,
+    public Account(String iban, Client client, String name, AccountType type,
                    Status status, BigDecimal balance, Currency currency,
                    Timestamp createdAt, Timestamp updatedAt) {
         this.iban = iban;
@@ -75,11 +77,11 @@ public class Account {
         this.name = name;
     }
 
-    public int getType() {
+    public AccountType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(AccountType type) {
         this.type = type;
     }
 

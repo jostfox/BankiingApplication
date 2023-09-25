@@ -1,6 +1,8 @@
 package org.example.entity;
 
+import org.example.enums.Roles;
 import org.example.enums.Status;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -49,6 +51,9 @@ public class Client {
     @OneToMany(mappedBy = "client", cascade = CascadeType.REMOVE)
     List<Account> accounts = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private Roles role;
+
     public Client() {
         //
     }
@@ -56,7 +61,7 @@ public class Client {
     public Client(Long id, String firstName, String lastName, String login, String password,
                   String taxCode, String address, String phone, String email, Status status,
                   Timestamp createdAt, Timestamp updatedAt, Manager manager,
-                  List<Account> accounts) {
+                  List<Account> accounts, Roles role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,25 +76,7 @@ public class Client {
         this.updatedAt = updatedAt;
         this.manager = manager;
         this.accounts = accounts;
-    }
-
-    public Client(Long id, String firstName, String lastName, String login, String password,
-                  String taxCode, String address, String phone, String email, Status status,
-                  Timestamp createdAt, Timestamp updatedAt, Long managerId,
-                  List<Account> accounts) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.login = login;
-        this.password = password;
-        this.taxCode = taxCode;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.accounts = accounts;
+        this.role = role;
     }
 
     public Long getId() {
@@ -204,8 +191,16 @@ public class Client {
         this.updatedAt = updatedAt;
     }
 
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", taxCode='" + taxCode + '\'' + ", address='" + address + '\'' + ", phone='" + phone + '\'' + ", email='" + email + '\'' + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", manager=" + manager.getFirstName() + ", accounts=" + accounts + '}';
+        return "Client{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", password='" + password + '\'' + ", taxCode='" + taxCode + '\'' + ", address='" + address + '\'' + ", phone='" + phone + '\'' + ", email='" + email + '\'' + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", manager=" + manager + ", accounts=" + accounts + '}';
     }
 }
