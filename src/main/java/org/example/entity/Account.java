@@ -33,7 +33,6 @@ public class Account {
     private Currency currency;
 
     private Timestamp createdAt;
-
     private Timestamp updatedAt;
 
     public Account() {

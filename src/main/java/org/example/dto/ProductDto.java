@@ -2,15 +2,11 @@ package org.example.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductDto {
 
     private long id;
-
     private String name;
-
     private ManagerDto manager;
 
     public ProductDto() {

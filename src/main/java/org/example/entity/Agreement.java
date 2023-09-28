@@ -20,9 +20,12 @@ public class Agreement {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product productId;
+
     private double interestRate;
+
     @Enumerated(EnumType.STRING)
     private Status status;
+
     private double sum;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

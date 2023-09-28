@@ -2,7 +2,6 @@ package org.example.entity;
 
 import org.example.enums.Roles;
 import org.example.enums.Status;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -28,20 +27,15 @@ public class Client {
     private String login;
 
     private String password;
-
     private String taxCode;
-
     private String address;
-
     private String phone;
-
     private String email;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     private Timestamp createdAt;
-
     private Timestamp updatedAt;
 
     @ManyToOne
@@ -55,7 +49,6 @@ public class Client {
     private Roles role;
 
     public Client() {
-        //
     }
 
     public Client(Long id, String firstName, String lastName, String login, String password,
@@ -201,6 +194,19 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", password='" + password + '\'' + ", taxCode='" + taxCode + '\'' + ", address='" + address + '\'' + ", phone='" + phone + '\'' + ", email='" + email + '\'' + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", manager=" + manager + ", accounts=" + accounts + '}';
+        return "Client{" + "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", taxCode='" + taxCode + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", manager=" + manager +
+                ", accounts=" + accounts + '}';
     }
 }

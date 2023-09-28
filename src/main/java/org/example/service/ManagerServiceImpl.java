@@ -6,14 +6,17 @@ import org.example.repositories.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
-@Service
+@Service("managerService")
 public class ManagerServiceImpl implements ManagerService {
 
+    private final ManagerRepository managerRepository;
+
     @Autowired
-    private ManagerRepository managerRepository;
+    public ManagerServiceImpl(ManagerRepository managerRepository) {
+        this.managerRepository = managerRepository;
+    }
 
     @Override
     public List<Manager> getAll() {

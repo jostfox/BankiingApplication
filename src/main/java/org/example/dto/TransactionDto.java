@@ -1,11 +1,8 @@
 package org.example.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.example.entity.Account;
 import org.example.enums.TransactionType;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 

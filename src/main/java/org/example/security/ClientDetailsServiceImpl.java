@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 @Service("clientDetailsServiceImpl")
 public class ClientDetailsServiceImpl implements UserDetailsService {
 
-    private final ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
     @Autowired
     public ClientDetailsServiceImpl(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
+    }
+
+    public ClientDetailsServiceImpl() {
     }
 
     @Override

@@ -2,23 +2,28 @@ package org.example.service;
 
 
 import org.example.entity.Client;
-import org.example.enums.Status;
+
 import org.example.exceptions.ItemNotFoundException;
 import org.example.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+
 import java.util.List;
 
-@Service
+@Service("clientService")
 public class ClientServiceImpl implements ClientService {
 
-    @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    public ClientServiceImpl(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
+
+    public ClientServiceImpl() {
+    }
 
     //Admin`s method
     @Override

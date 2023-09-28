@@ -19,5 +19,4 @@ public class AopLogger {
         System.out.println("\nMethod replies: " + value);
         return value;
     }
-
 }

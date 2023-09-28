@@ -7,21 +7,19 @@ import java.util.List;
 
 public interface AccountService {
 
-    public List<Account> getAll();
+    List<Account> getAll();
 
-    public Account getByIban(String iban);
+    Account getByIban(String iban);
 
-    public Account create(Account account);
+    Account create(Account account);
 
-    public BigDecimal checkBalance(String iban);
+    BigDecimal checkBalance(String iban);
 
-    public void close(String iban);
+    void close(String iban);
 
-    public BigDecimal topUp(String iban, BigDecimal amount);
+    BigDecimal topUp(String iban, BigDecimal amount);
 
-    public BigDecimal withdraw(String iban, BigDecimal amount);
+    BigDecimal withdraw(String iban, BigDecimal amount);
 
-    public Account getClientAccountByIban(String iban);
-
-
+    Account getClientAccountByIban(String iban);
 }

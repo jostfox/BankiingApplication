@@ -1,36 +1,24 @@
 package org.example.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.example.entity.Client;
 import org.example.enums.Status;
 
-import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ManagerDto {
 
     private long id;
-
     private String firstName;
-
     private String lastName;
-
     private String login;
-
     private String password;
-
     private Status status;
-
     private String description;
-
     private LocalDateTime createdAt;
-
     private List<ClientDto> clients;
-
     private List<ProductDto> products = new ArrayList<>();
 
     public ManagerDto() {
@@ -133,6 +121,14 @@ public class ManagerDto {
 
     @Override
     public String toString() {
-        return "ManagerDto{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", status=" + status + ", description='" + description + '\'' + ", createdAt=" + createdAt + ", clients=" + clients + ", products=" + products + '}';
+        return "ManagerDto{" + "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", status=" + status +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", clients=" + clients +
+                ", products=" + products + '}';
     }
 }

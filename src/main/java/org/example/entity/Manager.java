@@ -31,7 +31,6 @@ public class Manager {
     private Status status;
 
     private String description;
-
     private Timestamp createdAt;
 
     @OneToMany(mappedBy = "manager")
@@ -57,7 +56,6 @@ public class Manager {
         this.clients = clients;
         this.products = products;
     }
-
 
     public Long getId() {
         return id;
@@ -141,6 +139,14 @@ public class Manager {
 
     @Override
     public String toString() {
-        return "Manager{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", status=" + status + '\'' + ", description='" + description + '\'' + ", createdAt=" + createdAt + '\'' + ", clients=" + clients + '\'' + ", products=" + products + '}';
+        return "Manager{" + "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", status=" + status + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt + '\'' +
+                ", clients=" + clients + '\'' +
+                ", products=" + products + '}';
     }
 }

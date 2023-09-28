@@ -26,13 +26,10 @@ public class Transaction {
     private TransactionType type;
 
     private BigDecimal amount;
-
     private String description;
-
     private Timestamp createdAt;
 
     public Transaction() {
-        //
     }
 
     public Transaction(Account debitAccount, Account creditAccount, TransactionType type, BigDecimal amount,

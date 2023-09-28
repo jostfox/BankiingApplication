@@ -3,7 +3,6 @@ package org.example.controller;
 import org.example.converter.Converter;
 import org.example.dto.ClientDto;
 import org.example.entity.Client;
-import org.example.service.ClientService;
 import org.example.service.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,15 +20,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/clients")
 public class ClientController {
 
+    private final PasswordEncoder passwordEncoder;
+    private final ClientServiceImpl clientService;
+    private final Converter<Client, ClientDto> clientConverter;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private ClientServiceImpl clientService;
-
-    @Autowired
-    private Converter<Client, ClientDto> clientConverter;
+    public ClientController(PasswordEncoder passwordEncoder, ClientServiceImpl clientService,
+                            Converter<Client, ClientDto> clientConverter) {
+        this.passwordEncoder = passwordEncoder;
+        this.clientService = clientService;
+        this.clientConverter = clientConverter;
+    }
 
     //Admin`s method
     @GetMapping
@@ -86,7 +86,7 @@ public class ClientController {
     }
 
     @PutMapping("/status")
-    @PreAuthorize("hasAuthority('permission:manager')")
+    @PreAuthorize("hasAuthority('permission:admin')")
     public ResponseEntity<ClientDto> changeStatus(@RequestBody ClientDto clientDto) {
         Client client = clientService.getCurrent();
         client.setStatus(clientDto.getStatus());

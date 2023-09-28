@@ -234,7 +234,7 @@
         </sql>
     </changeSet>
 
-    <!--<changeSet id="202309102315548" author="Oleg Rulyov">
+    <changeSet id="202309102315548" author="Oleg Rulyov">
         <comment>Change initial point of autoincrement</comment>
         <sql>
             ALTER TABLE clients
@@ -246,7 +246,7 @@
 
 
         </sql>
-    </changeSet>-->
+    </changeSet>
 
 
 </databaseChangeLog>

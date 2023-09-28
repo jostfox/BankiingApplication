@@ -5,9 +5,7 @@ import org.example.enums.Roles;
 import org.example.enums.Status;
 
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,34 +13,20 @@ import java.util.List;
 public class ClientDto {
 
     private Long id;
-
     private String firstName;
-
     private String lastName;
-
     private String login;
-
     private String password;
-
     private String taxCode;
-
     private String address;
-
     private String phone;
-
     private String email;
-
     @Enumerated
     private Status status;
-
     private Timestamp createdAt;
-
     private Timestamp updatedAt;
-
     private ManagerDto manager;
-
     private List<AccountDto> accounts = new ArrayList<>();
-
     private Roles role;
 
     public ClientDto() {
@@ -197,6 +181,19 @@ public class ClientDto {
 
     @Override
     public String toString() {
-        return "ClientDto{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", login='" + login + '\'' + ", password='" + password + '\'' + ", taxCode='" + taxCode + '\'' + ", address='" + address + '\'' + ", phone='" + phone + '\'' + ", email='" + email + '\'' + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", manager=" + manager + ", accounts=" + accounts + '}';
+        return "ClientDto{" + "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", taxCode='" + taxCode + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", manager=" + manager +
+                ", accounts=" + accounts +
+                ", role=" + role + '}';
     }
 }

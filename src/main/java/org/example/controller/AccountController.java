@@ -17,17 +17,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/accounts")
 public class AccountController {
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
+    private final Converter<Account, AccountDto> accountConverter;
 
     @Autowired
-    private Converter<Account, AccountDto> accountConverter;
+    public AccountController(AccountService accountService, Converter<Account, AccountDto> accountConverter) {
+        this.accountService = accountService;
+        this.accountConverter = accountConverter;
+    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('permission:admin')")
     List<AccountDto> getAll() {
         return accountService.getAll().stream()
-                .map(account -> accountConverter.toDto(account))
+                .map(accountConverter::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -63,7 +66,6 @@ public class AccountController {
     ResponseEntity <BigDecimal> withdraw(@PathVariable("iban") String iban,
                          @PathVariable("amount") BigDecimal amount){
         return ResponseEntity.ok(accountService.withdraw(iban, amount));
-
     }
 
     @DeleteMapping("/{iban}/close")

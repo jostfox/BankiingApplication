@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.entity.Agreement;
-import org.example.entity.Client;
 import org.example.exceptions.ItemNotFoundException;
 import org.example.repositories.AgreementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +8,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service("agreementService")
 public class AgreementServiceImpl implements AgreementService {
 
+    private final AgreementRepository agreementRepository;
+
     @Autowired
-    AgreementRepository agreementRepository;
+    public AgreementServiceImpl(AgreementRepository agreementRepository) {
+        this.agreementRepository = agreementRepository;
+    }
 
     @Override
     public List<Agreement> getAll() {
@@ -36,11 +39,6 @@ public class AgreementServiceImpl implements AgreementService {
 
     @Override
     public void remove(Long id) {
-
-    }
-
-    @Override
-    public Agreement update(Long id) {
-        return null;
+        agreementRepository.deleteById(id);
     }
 }

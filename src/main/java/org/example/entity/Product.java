@@ -29,11 +29,8 @@ public class Product {
     private Currency currency;
 
     private double interestRate;
-
     private int prodLimit;
-
     private Timestamp createdAt;
-
     private Timestamp updatedAt;
 
     public Product() {

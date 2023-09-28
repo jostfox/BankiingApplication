@@ -6,50 +6,29 @@ import org.example.enums.AccountType;
 import org.example.enums.Currency;
 import org.example.enums.Status;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccountDto {
 
     private String iban;
-
     private Client client;
-
     private Status status;
-
     private String name;
-
     private AccountType type;
-
-    private double balance;
-
+    private BigDecimal balance;
     private Currency currency;
-
     private Timestamp createdAt;
-
     private Timestamp updatedAt;
 
     public AccountDto() {
     }
 
-    public AccountDto(String iban, Status status, double balance) {
+    public AccountDto(String iban, Status status, BigDecimal balance) {
         this.iban = iban;
         this.status = status;
         this.balance = balance;
-    }
-
-    public AccountDto(String iban, Client client, Status status, String name,
-                      AccountType type, double balance, Currency currency,
-                      Timestamp createdAt, Timestamp updatedAt) {
-        this.iban = iban;
-        this.client = client;
-        this.status = status;
-        this.name = name;
-        this.type = type;
-        this.balance = balance;
-        this.currency = currency;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public String getIban() {
@@ -92,11 +71,11 @@ public class AccountDto {
         this.type = type;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

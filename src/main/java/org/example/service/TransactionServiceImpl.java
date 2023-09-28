@@ -7,28 +7,29 @@ import org.example.exceptions.ItemNotFoundException;
 import org.example.exceptions.NotEnoughFundsException;
 
 import org.example.repositories.TransactionRepository;
-import org.example.service.handler.FindAccountByIdHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Service
+@Service("transactionService")
 public class TransactionServiceImpl implements TransactionService {
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private  TransactionRepository transactionRepository;
+    private  AccountService accountService;
 
     @Autowired
-    private AccountService accountService;
+    public TransactionServiceImpl(TransactionRepository transactionRepository,
+                                  @Qualifier("accountService") AccountService accountService) {
+        this.transactionRepository = transactionRepository;
+        this.accountService = accountService;
+    }
 
-    @Autowired
-    FindAccountByIdHandler accountByIdHandler;
-
-    @Autowired
-    ClientService clientService;
+    public TransactionServiceImpl() {
+    }
 
     @Override
     public List<Transaction> getAll() {

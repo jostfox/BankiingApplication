@@ -5,26 +5,29 @@ import org.example.entity.Client;
 import org.example.exceptions.ItemNotFoundException;
 import org.example.exceptions.NotEmptyBalanceException;
 import org.example.repositories.AccountRepository;
-import org.example.repositories.ClientRepository;
-import org.example.service.handler.FindById;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
-@Service
+
+@Service("accountService")
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+    private final ClientService clientService;
 
     @Autowired
-    private ClientServiceImpl clientService;
+    public AccountServiceImpl(AccountRepository accountRepository,
+                              @Qualifier("clientService") ClientService clientService) {
+        this.accountRepository = accountRepository;
+        this.clientService = clientService;
+    }
 
     @Override
-
     public List<Account> getAll() {
         return accountRepository.findAll();
     }
@@ -34,12 +37,10 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.save(account);
     }
 
-
     @Override
     public Account getByIban(String iban) {
         return accountRepository.findById(iban)
                 .orElseThrow(() -> new ItemNotFoundException(String.format("Account with IBAN %s not found", iban)));
-
     }
 
     @Override
@@ -56,7 +57,6 @@ public class AccountServiceImpl implements AccountService {
         }
         throw new NotEmptyBalanceException("Balance is not 0.00. You can not close the account");
     }
-
 
     @Override
     public BigDecimal topUp(String iban, BigDecimal amount) {

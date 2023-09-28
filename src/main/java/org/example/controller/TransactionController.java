@@ -16,17 +16,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/transactions")
 public class TransactionController {
 
-    @Autowired
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
+    private final Converter<Transaction, TransactionDto> transactionConverter;
 
     @Autowired
-    private Converter<Transaction, TransactionDto> transactionConverter;
+    public TransactionController(TransactionService transactionService, Converter<Transaction,
+            TransactionDto> transactionConverter) {
+        this.transactionService = transactionService;
+        this.transactionConverter = transactionConverter;
+    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('permission:user')")
     public List<TransactionDto> getAll() {
-        return transactionService.getAll().stream().
-                map(transactionConverter::toDto).collect(Collectors.toList());
+        return transactionService.getAll().stream().map(transactionConverter::toDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -38,8 +41,8 @@ public class TransactionController {
     @PutMapping("/{accountFrom}/{accountTo}/{amount}")
     @PreAuthorize("hasAuthority('permission:user')")
     public TransactionDto transfer(@PathVariable("accountFrom") String accountFrom,
-                                   @PathVariable("accountTo") String accountTo,
-                                   @PathVariable("amount") BigDecimal amount) {
+                                   @PathVariable("accountTo") String accountTo, @PathVariable(
+                                           "amount") BigDecimal amount) {
         Transaction transaction = transactionService.transfer(accountFrom, accountTo, amount);
 
         return transactionConverter.toDto(transaction);

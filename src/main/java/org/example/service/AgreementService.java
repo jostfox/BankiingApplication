@@ -6,13 +6,11 @@ import java.util.List;
 
 public interface AgreementService {
 
-    public List<Agreement> getAll();
+    List<Agreement> getAll();
 
-    public Agreement getById(Long id);
+    Agreement getById(Long id);
 
-    public Agreement create(Agreement agreement);
+    Agreement create(Agreement agreement);
 
-    public void remove(Long id);
-
-    public Agreement update(Long id);
+    void remove(Long id);
 }
