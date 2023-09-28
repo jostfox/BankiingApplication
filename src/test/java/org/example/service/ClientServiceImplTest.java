@@ -2,75 +2,48 @@ package org.example.service;
 
 import org.example.entity.Client;
 import org.example.repositories.ClientRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ClientServiceImplTest.ClientServiceTestConfig.class})
+@ExtendWith(MockitoExtension.class)
 class ClientServiceImplTest {
 
-    @TestConfiguration
-    static class ClientServiceTestConfig {
-        @Bean
-        public ClientService clientService(){
-            return new ClientServiceImpl();
-        }
-    }
-
-    @Autowired
-    private ClientService clientService;
-
-    @MockBean
-    private ClientRepository clientRepository;
+    @InjectMocks
+    private ClientServiceImpl clientService;
 
     @Mock
-    private List<String> list;
-
-    @BeforeEach
-    public void init(){
-        Client client = new Client();
-        client.setLogin("testlogin");
-        Mockito.when(clientService.getByLogin(client.getLogin())).thenReturn(client);
-    }
-
-    @Test
-    void getAll() {
-    }
+    private  ClientRepository clientRepository;
 
     @Test
     void getById() {
-    }
+        Client client = new Client();
+        client.setId(3L);
+        Mockito
+                .when(clientRepository.findById(client.getId()))
+                .thenReturn(Optional.of(client));
 
-    @Test
-    void getByName() {
+        Client anyClient = clientService.getById(3L);
+        assertEquals(3L, anyClient.getId());
     }
 
     @Test
     void getByLogin() {
-    }
+        Client client = new Client();
+        client.setLogin("testLogin");
+        Mockito
+                .when(clientRepository.findByLogin(client.getLogin()))
+                .thenReturn(Optional.of(client));
 
-    @Test
-    void save() {
-    }
-
-    @Test
-    void remove() {
-    }
-
-    @Test
-    void getCurrent() {
+        Client admin = clientService.getByLogin("testLogin");
+        assertEquals("testLogin", admin.getLogin());
     }
 }
