@@ -1,6 +1,7 @@
 package org.example.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.example.enums.Roles;
 import org.example.enums.Status;
 
@@ -13,7 +14,11 @@ import java.util.List;
 public class ClientDto {
 
     private Long id;
+
+    @Schema(description = "Client`s name")
     private String firstName;
+
+    @Schema(description = "Client`s surname")
     private String lastName;
     private String login;
     private String password;

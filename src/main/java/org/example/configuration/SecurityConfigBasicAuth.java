@@ -33,6 +33,7 @@ public class SecurityConfigBasicAuth extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers(HttpMethod.POST,"/api/clients").permitAll()
+                .antMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html").permitAll()
                 .anyRequest().authenticated().and()
                 .httpBasic().and()
                 .sessionManagement().disable();

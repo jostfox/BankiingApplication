@@ -22,7 +22,8 @@ public class AccountConverter implements Converter<Account, AccountDto> {
 
     @Override
     public AccountDto toDto(Account account) {
-        return new AccountDto(account.getIban(), account.getStatus(), account.getBalance());
+        return new AccountDto(account.getIban(), account.getStatus(), account.getBalance()
+        ,account.getCurrency());
     }
 
     @Override

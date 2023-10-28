@@ -23,7 +23,7 @@ public class ClientConverter implements Converter<Client, ClientDto> {
                         null, null, null, null, null, null, null), client.getAccounts() == null ?
                 null :
                 client.getAccounts().stream().map(account -> new AccountDto(account.getIban(),
-                        account.getStatus(), null)).collect(Collectors.toList()), null);
+                        account.getStatus(), null, null)).collect(Collectors.toList()), null);
     }
 
 

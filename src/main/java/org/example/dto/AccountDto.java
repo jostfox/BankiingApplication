@@ -25,10 +25,11 @@ public class AccountDto {
     public AccountDto() {
     }
 
-    public AccountDto(String iban, Status status, BigDecimal balance) {
+    public AccountDto(String iban, Status status, BigDecimal balance, Currency currency) {
         this.iban = iban;
         this.status = status;
         this.balance = balance;
+        this.currency = currency;
     }
 
     public String getIban() {
