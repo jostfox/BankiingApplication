@@ -1,1 +1,3 @@
-##Project Description: Backend Development of a Banking Microservice##
+<h1 align="center">Hi there, I'm <a href="https://daniilshat.ru/" target="_blank">Oleg Rulyov</a> 
+<img src="https://github.com/blackcater/blackcater/raw/main/images/Hi.gif" height="32"/></h1>
+<h3 align="center">Let me introduce my first pet project</h3>
