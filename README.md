@@ -1,1 +1,1 @@
-<font size = "8">Project Description: Backend Development of a Banking Microservice.</font>
+<span style="color: blue;">Project Description: Backend Development of a Banking Microservice.</span>
