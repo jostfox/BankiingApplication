@@ -6,3 +6,8 @@ Project Description: Backend Development of a Banking Microservice
 
 The goal of the project is to develop the backend part of a banking microservice, utilizing 
 various technologies and frameworks such as Spring Boot, MySQL, Liquibase, Mockito, Swagger, AOP, Hibernate, JPA, and SLF4J.
+
+Objective: 
+The main objective of this project is to create a robust backend microservice for banking operations 
+without a frontend component. The microservice will expose a RESTful API to perform various banking 
+transactions and manage customer accounts.
