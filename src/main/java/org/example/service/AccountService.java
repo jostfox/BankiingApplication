@@ -10,6 +10,7 @@ public interface AccountService {
     List<Account> getAll();
 
     Account getByIban(String iban);
+    List<Account> getClientsAccounts(String lastName, String firstName);
 
     Account create(Account account);
 

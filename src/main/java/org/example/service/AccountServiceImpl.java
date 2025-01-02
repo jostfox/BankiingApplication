@@ -33,6 +33,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public List<Account> getClientsAccounts(String firstName, String lastName) {
+        Client client = clientService.getByName(firstName, lastName);
+        return client.getAccounts();
+    }
+
+    @Override
     public Account create(Account account) {
         return accountRepository.save(account);
     }

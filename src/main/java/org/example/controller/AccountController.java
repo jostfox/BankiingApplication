@@ -43,6 +43,17 @@ public class AccountController {
                 .collect(Collectors.toList());
     }
 
+    @Operation(summary = "List of specified clients accounts",
+    description = "Get a list of accounts of specified client")
+    @SecurityRequirement(name = "basicauth")
+    @GetMapping("/{firstName}/{lastName}")
+    @PreAuthorize("hasAuthority('permission:admin')")
+    List<AccountDto> getClientsAccounts(@PathVariable String firstName, @PathVariable String lastName) {
+        return accountService.getClientsAccounts(firstName, lastName)
+                .stream().map(accountConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
     @Operation(summary = "Get account by IBAN",
             description = "Get an account by specified IBAN")
     @SecurityRequirement(name = "basicauth")
@@ -67,7 +78,7 @@ public class AccountController {
     @SecurityRequirement(name = "basicauth")
     @GetMapping("/{account}/balance")
     @PreAuthorize("hasAuthority('permission:user')")
-    BigDecimal checkBalance(@PathVariable("account") String iban){
+    BigDecimal checkBalance(@PathVariable("IBAN") String iban){
         return accountService.checkBalance(iban);
     }
 

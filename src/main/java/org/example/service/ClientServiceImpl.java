@@ -42,7 +42,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client getByName(String firstName, String lastName) {
         return getAll().stream()
-                .filter(client -> client.getFirstName().equals(firstName) & client.getLastName().equals(lastName))
+                .filter(client -> client.getFirstName().equalsIgnoreCase(firstName) & client.getLastName().equalsIgnoreCase(lastName))
                 .findFirst().orElseThrow(() ->
                         new ItemNotFoundException(String.format("Client " + "%s %s not found", firstName, lastName)));
     }
